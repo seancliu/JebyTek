@@ -1,13 +1,13 @@
-package com.jebytek.proj;
+package com.jebytek;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjApplication {
+public class EurekaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjApplication.class, args);
+		SpringApplication.run(EurekaApplication.class, args);
 	}
 
 }
