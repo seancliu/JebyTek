@@ -1,4 +1,4 @@
-package com.jebytek.system;
+package com.jebytek.system.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
