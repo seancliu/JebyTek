@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jebytek.TestMapper" >
-    <select id="list" resultType="com.jebytek.Test">
+<mapper namespace="com.jebytek.server.mapper.TestMapper" >
+    <select id="list" resultType="com.jebytek.server.domain.Test">
         select t.id, t.name from test t
     </select>
 </mapper>
