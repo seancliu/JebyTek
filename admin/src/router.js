@@ -23,7 +23,7 @@ export default new Router({
         component: Admin,
         children: [{
             path: "welcome",
-            component: Welcome
+            component: Welcome,
         }]
     }]
 })
