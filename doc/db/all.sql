@@ -1,3 +1,23 @@
+drop table if exists `chapter`;
+create table `chapter` (
+    `id` char(8) not null comment 'ID',
+    `course_id` char(8) comment 'COURSE_ID',
+    `name` varchar(50) comment 'NAME',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='CHAPTER';
+
+
+
+
+
+
+
+
+
+
+
+
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
