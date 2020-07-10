@@ -8,7 +8,7 @@
                             <h1>
                                 <i class="ace-icon fa fa-leaf green"></i>
                                 <span class="red">Admin</span>
-                                <span class="white" id="id-text2">System</span>
+                                <span class="white" id="id-text2">Portal</span>
                             </h1>
                             <h4 class="blue" id="id-company-text">&copy; JebyTek</h4>
                         </div>
@@ -77,9 +77,12 @@
 </template>
 
 <script>
-    $('body').attr('class', 'login-layout light-login');
     export default {
-        name: 'App',
+        name: 'login',
+        mounted: function() {
+            $('body').removeClass('no-skin');
+            $('body').attr('class', 'login-layout light-login');
+        },
         methods: {
             login() {
                 this.$router.push("/admin")
