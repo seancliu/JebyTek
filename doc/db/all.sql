@@ -14,7 +14,8 @@ create table `chapter` (
 
 
 
-
+insert into `chapter` (id, course_id, name) values ('00000000', '00000000', 'Test Chapter One');
+insert into `chapter` (id, course_id, name) values ('00000001', '00000000', 'Test Chapter Two');
 
 
 
