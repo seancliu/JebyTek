@@ -355,7 +355,7 @@
 
         <ul class="nav nav-list">
           <li class="" id="dashboard-sidebar">
-            <router-link to="/welcome">
+            <router-link to="/dashboard">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> Dashboard </span>
             </router-link>
@@ -463,8 +463,22 @@
     export default {
         name: 'admin',
         mounted: function() {
+            let _this = this;
             $('body').removeClass('login-layout light-login');
             $('body').attr('class', 'no-skin');
+            _this.activateSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+        },
+        watch: {
+            $route: {
+                handler:function(val, oldVal){
+                    console.log("---->Page Redirection：", val, oldVal);
+                    let _this = this;
+
+                    _this.$nextTick(function(){  // execute after loading the page
+                        _this.activateSidebar(_this.$route.name.replace("/", "-") + "-sidebar");
+                    })
+                }
+            }
         },
         methods: {
             login() {

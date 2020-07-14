@@ -976,7 +976,7 @@
     export default {
         name: 'chapter',
         mounted: function() {
-            this.$parent.activateSidebar("business-chapter-sidebar")
+            // this.$parent.activateSidebar("business-chapter-sidebar")
         },
         methods: {
         }

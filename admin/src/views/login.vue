@@ -85,7 +85,7 @@
         },
         methods: {
             login() {
-                this.$router.push("/welcome")
+                this.$router.push("/dashboard")
             }
         }
     }

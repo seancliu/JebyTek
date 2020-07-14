@@ -6,9 +6,9 @@
 
 <script>
     export default {
-        name: 'welcome',
+        name: 'dashboard',
         mounted: function() {
-            this.$parent.activateSidebar("dashboard-sidebar")
+            // this.$parent.activateSidebar("dashboard-sidebar")
         },
         methods: {
         }
