@@ -355,7 +355,7 @@
 
         <ul class="nav nav-list">
           <li class="" id="dashboard-sidebar">
-            <router-link to="/admin/welcome">
+            <router-link to="/welcome">
               <i class="menu-icon fa fa-tachometer"></i>
               <span class="menu-text"> Dashboard </span>
             </router-link>
@@ -406,7 +406,7 @@
 
             <ul class="submenu">
               <li class="active" id="business-chapter-sidebar">
-                <router-link to="/admin/business/chapter">
+                <router-link to="/business/chapter">
                   <i class="menu-icon fa fa-caret-right"></i>
                   Chapters
                 </router-link>
