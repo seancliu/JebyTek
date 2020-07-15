@@ -976,9 +976,17 @@
     export default {
         name: 'chapter',
         mounted: function() {
+            let _this = this;
+            _this.list();
             // this.$parent.activateSidebar("business-chapter-sidebar")
         },
         methods: {
+            list() {
+                let _this = this;
+                _this.$ajax.get('http://127.0.0.1:9002/business/admin/chapter/list').then((response)=>{
+                    console.log("Chapter Search Result: ", response);
+                })
+            }
         }
     }
 </script>
