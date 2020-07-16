@@ -1,5 +1,6 @@
 package com.jebytek.server.service;
 
+import com.github.pagehelper.PageHelper;
 import com.jebytek.server.domain.Chapter;
 import com.jebytek.server.domain.ChapterExample;
 import com.jebytek.server.dto.ChapterDto;
@@ -16,6 +17,7 @@ public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
     public List<ChapterDto> list() {
+        PageHelper.startPage(2, 1);
         ChapterExample chapterExample = new ChapterExample();
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         List<ChapterDto> chapterDtoList = new ArrayList<>();
