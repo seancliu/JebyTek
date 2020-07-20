@@ -101,20 +101,20 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">Name</label>
                 <div class="col-sm-10">
-                  <input class="form-control" placeholder="Chapter Name">
+                  <input v-model="chapter.name" class="form-control" placeholder="Chapter Name">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">ID</label>
                 <div class="col-sm-10">
-                  <input class="form-control" placeholder="Chapter ID">
+                  <input v-model="chapter.courseId" class="form-control" placeholder="Chapter ID">
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary">Save</button>
+            <button v-on:click="save()" type="button" class="btn btn-primary">Save</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -130,6 +130,7 @@
         name: 'chapter',
         data: function() {
             return {
+                chapter: {},
                 chapters: []
             }
         },
@@ -145,6 +146,7 @@
                 let _this = this;
                 $(".modal").modal("show");
             },
+
             list(page) {
                 let _this = this;
                 _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/list', {
@@ -154,6 +156,13 @@
                     console.log("Chapter Search Result: ", response);
                     _this.chapters = response.data.list;
                     _this.$refs.pagination.render(page, response.data.total);
+                })
+            },
+
+            save() {
+                let _this = this;
+                _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
+                    console.log("Chapter Save Result: ", response);
                 })
             }
         }

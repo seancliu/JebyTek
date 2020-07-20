@@ -1,5 +1,6 @@
 package com.jebytek.business.controller.admin;
 
+import com.jebytek.server.dto.ChapterDto;
 import com.jebytek.server.dto.PageDto;
 import com.jebytek.server.service.ChapterService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,5 +19,11 @@ public class ChapterController {
     public PageDto list(@RequestBody PageDto pageDto) {
         chapterService.list(pageDto);
         return pageDto;
+    }
+
+    @RequestMapping("/save")
+    public ChapterDto save(@RequestBody ChapterDto chapterDto) {
+        chapterService.save(chapterDto);
+        return chapterDto;
     }
 }
