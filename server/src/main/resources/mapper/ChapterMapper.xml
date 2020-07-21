@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jebytek.server.mapper.ChapterMapper">
   <resultMap id="BaseResultMap" type="com.jebytek.server.domain.Chapter">
-    <result column="id" jdbcType="CHAR" property="id" />
+    <id column="id" jdbcType="CHAR" property="id" />
     <result column="course_id" jdbcType="CHAR" property="courseId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
@@ -81,6 +81,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chapter
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from chapter
+    where id = #{id,jdbcType=CHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.jebytek.server.domain.ChapterExample">
     delete from chapter
     <if test="_parameter != null">
@@ -147,5 +157,23 @@
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jebytek.server.domain.Chapter">
+    update chapter
+    <set>
+      <if test="courseId != null">
+        course_id = #{courseId,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jebytek.server.domain.Chapter">
+    update chapter
+    set course_id = #{courseId,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
   </update>
 </mapper>
