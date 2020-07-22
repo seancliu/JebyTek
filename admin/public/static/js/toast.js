@@ -1,4 +1,4 @@
-toast = {
+Toast = {
     success: function (message) {
         Swal.fire({
             position: 'top-end',
