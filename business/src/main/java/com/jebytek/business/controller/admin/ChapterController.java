@@ -15,6 +15,9 @@ public class ChapterController {
     @Resource
     private ChapterService chapterService;
 
+    /*
+    * retrieve all chapters
+    * */
     @PostMapping("/list")
     public ResponseDto list(@RequestBody PageDto pageDto) {
         ResponseDto responseDto = new ResponseDto();
@@ -23,6 +26,11 @@ public class ChapterController {
         return responseDto;
     }
 
+    /*
+    * save a record
+    * when id is empty, insert;
+    * when id is not empty, update
+    * */
     @PostMapping("/save")
     public ResponseDto save(@RequestBody ChapterDto chapterDto) {
 
@@ -37,6 +45,9 @@ public class ChapterController {
         return responseDto;
     }
 
+    /*
+    * delete
+    * */
     @DeleteMapping("/delete/{id}")
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();

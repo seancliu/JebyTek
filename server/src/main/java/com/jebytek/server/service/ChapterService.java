@@ -21,6 +21,10 @@ import java.util.List;
 public class ChapterService {
     @Resource
     private ChapterMapper chapterMapper;
+
+    /*
+    * retrieve chapters
+    * */
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
@@ -37,6 +41,11 @@ public class ChapterService {
         pageDto.setList(chapterList);
     }
 
+    /*
+     * save a record
+     * when id is empty, insert;
+     * when id is not empty, update
+     * */
     public void save(ChapterDto chapterDto) {
         Chapter chapter = CopyUtil.copy(chapterDto, Chapter.class);
         if (StringUtils.isEmpty(chapterDto.getId())) {

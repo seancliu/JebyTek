@@ -146,6 +146,9 @@
                 $("#form-modal").modal("show");
             },
 
+            /*
+            * get all chapters
+            * */
             list(page) {
                 let _this = this;
                 Loading.show();
@@ -154,13 +157,15 @@
                     size: _this.$refs.pagination.size,
                 }).then((response)=>{
                     Loading.hide();
-                    console.log("Chapter Search Result: ", response);
                     let resp = response.data;
                     _this.chapters = resp.content.list;
                     _this.$refs.pagination.render(page, resp.content.total);
                 })
             },
 
+            /*
+            * save change to a chapter
+            * */
             save() {
                 let _this = this;
 
@@ -173,7 +178,6 @@
                 Loading.show();
                 _this.$ajax.post('http://127.0.0.1:9000/business/admin/chapter/save', _this.chapter).then((response)=>{
                     Loading.hide();
-                    console.log("Chapter Save Result: ", response);
                     let resp = response.data;
                     if (resp.success) {
                         $("#form-modal").modal("hide");
@@ -185,13 +189,15 @@
                 })
             }       ,
 
+            /*
+            * delete a chapter
+            * */
             del(id) {
                 let _this = this;
                 Confirm.show("You won't be able to revert this!", function () {
                     Loading.show();
                     _this.$ajax.delete('http://127.0.0.1:9000/business/admin/chapter/delete/' + id).then((response)=>{
                         Loading.hide();
-                        console.log("Chapter Delete Result: ", response);
                         let resp = response.data;
                         if (resp.success) {
                             _this.list(1);
@@ -203,22 +209,6 @@
                         }
                     })
                 });
-
-                // Swal.fire({
-                //     title: 'Are you sure?',
-                //     text: "You won't be able to revert this!",
-                //     icon: 'warning',
-                //     showCancelButton: true,
-                //     confirmButtonColor: '#3085d6',
-                //     cancelButtonColor: '#d33',
-                //     confirmButtonText: 'Yes, delete it!'
-                // }).then((result) => {
-                //     if (result.value) {
-                //
-                //
-                //     }
-                // })
-
             }
         }
     }
