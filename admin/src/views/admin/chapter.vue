@@ -179,6 +179,8 @@
                         $("#form-modal").modal("hide");
                         _this.list(1);
                         Toast.success("Saved successfully!");
+                    } else {
+                        Toast.warning(resp.message)
                     }
                 })
             }       ,
