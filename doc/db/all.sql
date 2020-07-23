@@ -6,14 +6,6 @@ create table `chapter` (
     primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='CHAPTER';
 
-
-
-
-
-
-
-
-
 insert into `chapter` (id, course_id, name) values ('00000000', '00000000', 'Test Chapter 00');
 insert into `chapter` (id, course_id, name) values ('00000001', '00000000', 'Test Chapter 01');
 insert into `chapter` (id, course_id, name) values ('00000002', '00000000', 'Test Chapter 02');
@@ -30,7 +22,23 @@ insert into `chapter` (id, course_id, name) values ('00000012', '00000000', 'Tes
 insert into `chapter` (id, course_id, name) values ('00000013', '00000000', 'Test Chapter 13');
 insert into `chapter` (id, course_id, name) values ('00000014', '00000000', 'Test Chapter 14');
 
+DROP TABLE IF EXISTS `section`;
+CREATE TABLE `section` (
+    `id` CHAR(8) NOT NULL DEFAULT '' COMMENT 'ID',
+    `title` VARCHAR(50) NOT NULL COMMENT 'TITLE',
+    `course_id` CHAR(8) COMMENT 'COURSE_ID',
+    `chapter_id` CHAR(8) COMMENT 'CHAPTER_ID',
+    `video` VARCHAR(200) COMMENT 'VIDEO',
+    `length` INT COMMENT 'TIME IN SECS',
+    `charge` CHAR(1) COMMENT 'C: CHARGE; F: FREE',
+    `idx` INT COMMENT 'INDEX',
+    `created_at` DATETIME(3) COMMENT 'CREATE TIME',
+    `updated_at` DATETIME(3) COMMENT 'UPDATE TIME',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='SECTION';
 
+INSERT INTO `section` (id, title, course_id, chapter_id, video, length, charge, idx, created_at, updated_at)
+VALUES ('00000001', 'TEST SECTION 1', '00000001', '00000000', '', 500, 'F', 1, now(), now());
 
 
 drop table if exists `test`;
