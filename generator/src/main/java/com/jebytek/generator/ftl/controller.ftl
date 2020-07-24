@@ -1,4 +1,4 @@
-package com.jebytek.business.controller.admin;
+package com.jebytek.${module}.controller.admin;
 
 import com.jebytek.server.dto.${Domain}Dto;
 import com.jebytek.server.dto.PageDto;
