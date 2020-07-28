@@ -73,9 +73,9 @@ public class DbUtil {
                 field.setJavaType(DbUtil.sqlTypeToJavaType(rs.getString("Type")));
                 field.setComment(comment);
                 if (comment.contains("|")) {
-                    field.setNameCn(comment.substring(0, comment.indexOf("|")));
+                    field.setNameComment(comment.substring(0, comment.indexOf("|")));
                 } else {
-                    field.setNameCn(comment);
+                    field.setNameComment(comment);
                 }
 
                 fieldList.add(field);
