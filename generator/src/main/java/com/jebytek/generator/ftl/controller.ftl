@@ -36,12 +36,14 @@ public class ${Domain}Controller {
 
         // saving validation
         <#list fieldList as field>
+        <#if field.name!="id" && field.nameHump!="createdAt" && field.nameHump!="updatedAt" && field.nameHump!="index">
             <#if !field.nullAble>
         ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}");
             </#if>
             <#if (field.length > 0)>
         ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}", 1, ${field.length});
             </#if>
+        </#if>
         </#list>
 
         ResponseDto responseDto = new ResponseDto();

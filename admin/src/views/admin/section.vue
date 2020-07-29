@@ -18,31 +18,36 @@
       <thead>
       <tr>
             <th>ID</th>
+
             <th>TITLE</th>
+
             <th>COURSE_ID</th>
+
             <th>CHAPTER_ID</th>
+
             <th>VIDEO</th>
+
             <th>TIME IN SECS</th>
+
             <th>C: CHARGE; F: FREE</th>
+
             <th>INDEX</th>
-            <th>CREATE TIME</th>
-            <th>UPDATE TIME</th>
+
+
             <th>Operation</th>
       </tr>
       </thead>
 
       <tbody>
       <tr v-for="section in sections">
-              <td>{{section.id}}</td>
-              <td>{{section.title}}</td>
-              <td>{{section.courseId}}</td>
-              <td>{{section.chapterId}}</td>
-              <td>{{section.video}}</td>
-              <td>{{section.length}}</td>
-              <td>{{section.charge}}</td>
-              <td>{{section.idx}}</td>
-              <td>{{section.createdAt}}</td>
-              <td>{{section.updatedAt}}</td>
+          <td>{{section.id}}</td>
+          <td>{{section.title}}</td>
+          <td>{{section.courseId}}</td>
+          <td>{{section.chapterId}}</td>
+          <td>{{section.video}}</td>
+          <td>{{section.length}}</td>
+          <td>{{section.charge}}</td>
+          <td>{{section.idx}}</td>
 
 
         <td>
@@ -104,66 +109,48 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">ID</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.id" class="form-control">
-                        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">TITLE</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.title" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">TITLE</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.title" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">COURSE_ID</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.courseId" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">COURSE_ID</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.courseId" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">CHAPTER_ID</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.chapterId" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">CHAPTER_ID</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.chapterId" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">VIDEO</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.video" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">VIDEO</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.video" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">TIME IN SECS</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.length" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">TIME IN SECS</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.length" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">C: CHARGE; F: FREE</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.charge" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">C: CHARGE; F: FREE</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.charge" class="form-control">
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">INDEX</label>
+                    <div class="col-sm-10">
+                        <input v-model="section.idx" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">INDEX</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.idx" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">CREATE TIME</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.createdAt" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">UPDATE TIME</label>
-                        <div class="col-sm-10">
-                            <input v-model="section.updatedAt" class="form-control">
-                        </div>
-                    </div>
+                </div>
             </form>
           </div>
           <div class="modal-footer">
