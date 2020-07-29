@@ -35,7 +35,14 @@ public class ${Domain}Controller {
     public ResponseDto save(@RequestBody ${Domain}Dto ${domain}Dto) {
 
         // saving validation
-        // TODO
+        <#list fieldList as field>
+            <#if !field.nullAble>
+        ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}");
+            </#if>
+            <#if (field.length > 0)>
+        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}", 1, ${field.length});
+            </#if>
+        </#list>
 
         ResponseDto responseDto = new ResponseDto();
         ${domain}Service.save(${domain}Dto);

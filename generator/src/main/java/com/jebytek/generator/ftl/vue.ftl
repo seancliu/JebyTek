@@ -164,7 +164,18 @@
                 let _this = this;
 
                 //save validation
-
+                if (1 != 1
+                    <#list fieldList as field>
+                      <#if !field.nullAble>
+                    || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameComment}")
+                      </#if>
+                      <#if (field.length > 0)>
+                    || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameComment}", 1, ${field.length})
+                      </#if>
+                    </#list>
+                ) {
+                  return;
+                }
 
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/save', _this.${domain}).then((response)=>{

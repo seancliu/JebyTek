@@ -1,9 +1,10 @@
 package com.jebytek.business.controller.admin;
 
+import com.jebytek.server.dto.SectionDto;
 import com.jebytek.server.dto.PageDto;
 import com.jebytek.server.dto.ResponseDto;
-import com.jebytek.server.dto.SectionDto;
 import com.jebytek.server.service.SectionService;
+import com.jebytek.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,7 +35,9 @@ public class SectionController {
     public ResponseDto save(@RequestBody SectionDto sectionDto) {
 
         // saving validation
-        // TODO
+        ValidatorUtil.require(sectionDto.getTitle(), "TITLE");
+        ValidatorUtil.length(sectionDto.getTitle(), "TITLE", 1, 50);
+        ValidatorUtil.length(sectionDto.getVideo(), "VIDEO", 1, 200);
 
         ResponseDto responseDto = new ResponseDto();
         sectionService.save(sectionDto);
