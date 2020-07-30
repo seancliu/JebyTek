@@ -29,7 +29,7 @@
 
             <th>TIME IN SECS</th>
 
-            <th>C: CHARGE; F: FREE</th>
+            <th>PRICE</th>
 
             <th>INDEX</th>
 
@@ -46,7 +46,7 @@
           <td>{{section.chapterId}}</td>
           <td>{{section.video}}</td>
           <td>{{section.length}}</td>
-          <td>{{section.charge}}</td>
+          <td>{{CHARGE | optionKV(section.charge)}}</td>
           <td>{{section.idx}}</td>
 
 
@@ -140,9 +140,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">C: CHARGE; F: FREE</label>
+                    <label class="col-sm-2 control-label">PRICE</label>
                     <div class="col-sm-10">
-                        <input v-model="section.charge" class="form-control">
+                      <select v-model="section.charge" class="form-control">
+                        <option v-for="o in CHARGE" v-bind:value="o.key">{{o.value}}</option>
+                      </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -172,7 +174,8 @@
         data: function() {
             return {
                 section: {},
-                sections: []
+                sections: [],
+                CHARGE: [{key:"C", value:"Charge"},{key:"F", value:"Free"}],
             }
         },
 
@@ -239,7 +242,7 @@
                         Toast.warning(resp.message)
                     }
                 })
-            }       ,
+            },
 
             /*
             * delete a section

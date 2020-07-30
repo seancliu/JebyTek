@@ -1,7 +1,9 @@
 package com.jebytek.server.dto;
 
+
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class SectionDto {
 
@@ -48,13 +50,13 @@ public class SectionDto {
     /**
      * CREATE TIME
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
 
     /**
      * UPDATE TIME
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date updatedAt;
 
     public String getId() {
