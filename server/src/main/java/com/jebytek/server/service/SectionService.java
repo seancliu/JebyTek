@@ -6,6 +6,7 @@ import com.jebytek.server.domain.Section;
 import com.jebytek.server.domain.SectionExample;
 import com.jebytek.server.dto.SectionDto;
 import com.jebytek.server.dto.PageDto;
+import com.jebytek.server.enums.CourseChargeEnum;
 import com.jebytek.server.mapper.SectionMapper;
 import com.jebytek.server.util.CopyUtil;
 import com.jebytek.server.util.UuidUtil;
@@ -62,6 +63,7 @@ public class SectionService {
         section.setCreatedAt(now);
         section.setUpdatedAt(now);
         section.setId(UuidUtil.getShortUuid());
+        section.setCharge(CourseChargeEnum.CHARGE.getCode());
         sectionMapper.insert(section);
     }
 

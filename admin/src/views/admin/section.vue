@@ -175,7 +175,7 @@
             return {
                 section: {},
                 sections: [],
-                CHARGE: CHARGE,
+                CHARGE: SECTION_CHARGE,
             }
         },
 
