@@ -22,6 +22,24 @@ insert into `chapter` (id, course_id, name) values ('00000012', '00000000', 'Tes
 insert into `chapter` (id, course_id, name) values ('00000013', '00000000', 'Test Chapter 13');
 insert into `chapter` (id, course_id, name) values ('00000014', '00000000', 'Test Chapter 14');
 
+DROP TABLE IF EXISTS `course`;
+CREATE TABLE `course`  (
+   `id` char(8) NOT NULL DEFAULT '' COMMENT 'ID',
+   `name` varchar(50) NOT NULL COMMENT 'Name',
+   `description` varchar(2000) NULL DEFAULT NULL COMMENT 'Description',
+   `time` int(11) NULL DEFAULT 0 COMMENT 'Time (in secs)',
+   `price` decimal(8, 2) NULL DEFAULT 0 COMMENT 'Price (USD)',
+   `thumb` varchar(100) NULL DEFAULT NULL COMMENT 'Thumb',
+   `level` char(1) NULL DEFAULT NULL COMMENT 'Level|ENUM[CourseLevelEnum]: ONE(\"1\", \"Easy\"), TWO(\"2\", \"Medium\"), THREE(\"3\", \"Hard\")',
+   `charge` char(1) NULL DEFAULT NULL COMMENT 'Charge|ENUM[CourseChargeEnum]: CHARGE(\"C\", \"Charge\"), FREE(\"F\", \"Free\")',
+   `status` char(1) NULL DEFAULT NULL COMMENT 'Status|ENUM[CourseStatusEnum]: PUBLISHED(\"P\", \"Published\"), DRAFT(\"D\", \"Draft\")',
+   `enrolled` int(11) NULL DEFAULT 0 COMMENT 'Enrolled Count',
+   `idx` int(11) NULL DEFAULT NULL COMMENT 'Index',
+   `created_at` datetime(3) NULL DEFAULT NULL COMMENT 'Created At',
+   `updated_at` datetime(3) NULL DEFAULT NULL COMMENT 'Updated At',
+   PRIMARY KEY (`id`)
+) ENGINE = InnoDB default charset=utf8mb4 COMMENT = 'COURSE';
+
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section` (
     `id` CHAR(8) NOT NULL DEFAULT '' COMMENT 'ID',

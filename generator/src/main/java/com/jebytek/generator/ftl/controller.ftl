@@ -41,7 +41,7 @@ public class ${Domain}Controller {
         ValidatorUtil.require(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}");
             </#if>
             <#if (field.length > 0)>
-        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}", 1, ${field.length});
+        ValidatorUtil.length(${domain}Dto.get${field.nameBigHump}(), "${field.nameComment}", 1, ${field.length?c});
             </#if>
         </#if>
         </#list>
