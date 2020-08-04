@@ -1,7 +1,7 @@
 package com.jebytek.business.controller.admin;
 
 import com.jebytek.server.dto.ChapterDto;
-import com.jebytek.server.dto.PageDto;
+import com.jebytek.server.dto.ChapterPageDto;
 import com.jebytek.server.dto.ResponseDto;
 import com.jebytek.server.service.ChapterService;
 import com.jebytek.server.util.ValidatorUtil;
@@ -19,10 +19,11 @@ public class ChapterController {
     * retrieve all chapters
     * */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody ChapterPageDto chapterPageDto) {
         ResponseDto responseDto = new ResponseDto();
-        chapterService.list(pageDto);
-        responseDto.setContent(pageDto);
+        ValidatorUtil.require(chapterPageDto.getCourseId(), "Course ID");
+        chapterService.list(chapterPageDto);
+        responseDto.setContent(chapterPageDto);
         return responseDto;
     }
 

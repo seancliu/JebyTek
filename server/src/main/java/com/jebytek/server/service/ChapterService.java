@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jebytek.server.domain.Chapter;
 import com.jebytek.server.domain.ChapterExample;
 import com.jebytek.server.dto.ChapterDto;
-import com.jebytek.server.dto.PageDto;
+import com.jebytek.server.dto.ChapterPageDto;
 import com.jebytek.server.mapper.ChapterMapper;
 import com.jebytek.server.util.CopyUtil;
 import com.jebytek.server.util.UuidUtil;
@@ -25,12 +25,16 @@ public class ChapterService {
     /*
     * retrieve chapters
     * */
-    public void list(PageDto pageDto) {
-        PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
+    public void list(ChapterPageDto chapterPageDto) {
+        PageHelper.startPage(chapterPageDto.getPage(), chapterPageDto.getSize());
         ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if (!StringUtils.isEmpty(chapterPageDto.getCourseId())) {
+            criteria.andCourseIdEqualTo(chapterPageDto.getCourseId());
+        }
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
-        pageDto.setTotal(pageInfo.getTotal());
+        chapterPageDto.setTotal(pageInfo.getTotal());
         List<ChapterDto> chapterDtoList = new ArrayList<>();
         for (int i = 0, size = chapterList.size(); i < size; i++) {
             Chapter chapter = chapterList.get(i);
@@ -38,7 +42,7 @@ public class ChapterService {
             BeanUtils.copyProperties(chapter, chapterDto);
             chapterDtoList.add(chapterDto);
         }
-        pageDto.setList(chapterList);
+        chapterPageDto.setList(chapterList);
     }
 
     /*
