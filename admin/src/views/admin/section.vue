@@ -1,5 +1,11 @@
 <template>
   <div>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/course" class="pink"> {{course.name}} </router-link>：
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/chapter" class="pink"> {{chapter.name}} </router-link>
+    </h4>
     <p>
       <button v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
@@ -21,10 +27,6 @@
 
             <th>TITLE</th>
 
-            <th>COURSE_ID</th>
-
-            <th>CHAPTER_ID</th>
-
             <th>VIDEO</th>
 
             <th>TIME IN SECS</th>
@@ -42,8 +44,6 @@
       <tr v-for="section in sections">
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
-          <td>{{section.courseId}}</td>
-          <td>{{section.chapterId}}</td>
           <td>{{section.video}}</td>
           <td>{{section.length}}</td>
           <td>{{CHARGE | optionKV(section.charge)}}</td>
@@ -116,15 +116,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">COURSE_ID</label>
+                    <label class="col-sm-2 control-label">COURSE</label>
                     <div class="col-sm-10">
-                        <input v-model="section.courseId" class="form-control">
+                      <p class="form-control-static">{{course.name}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">CHAPTER_ID</label>
+                    <label class="col-sm-2 control-label">CHAPTER</label>
                     <div class="col-sm-10">
-                        <input v-model="section.chapterId" class="form-control">
+                      <p class="form-control-static">{{chapter.name}}</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -176,12 +176,21 @@
                 section: {},
                 sections: [],
                 CHARGE: SECTION_CHARGE,
+                course: {},
+                chapter: {}
             }
         },
 
         mounted: function() {
             let _this = this;
             _this.$refs.pagination.size = 10;
+            let course = SessionStorage.get("course") || {};
+            let chapter = SessionStorage.get("chapter") || {};
+            if (Tool.isEmpty(course) || Tool.isEmpty(chapter)) {
+                _this.$router.push("/dashboard");
+            }
+            _this.course = course;
+            _this.chapter = chapter;
             _this.list(1);
             // this.$parent.activateSidebar("business-section-sidebar")
         },
@@ -207,6 +216,8 @@
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/list', {
                     page: page,
                     size: _this.$refs.pagination.size,
+                    courseId: _this.course.id,
+                    chapterId: _this.chapter.id
                 }).then((response)=>{
                     Loading.hide();
                     let resp = response.data;
@@ -229,6 +240,8 @@
                 ) {
                   return;
                 }
+                _this.section.courseId = _this.course.id;
+                _this.section.chapterId = _this.chapter.id;
 
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section).then((response)=>{

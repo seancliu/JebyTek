@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h3>{{course.name}}</h3>
+    <h4 class="lighter">
+      <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+      <router-link to="/business/course" class="pink"> {{course.name}} </router-link>
+    </h4>
+    <hr>
     <p>
       <router-link to="/business/course" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-arrow-left"></i>
@@ -25,7 +29,6 @@
       <tr>
         <th>ID</th>
         <th>Course Name</th>
-        <th>Course ID</th>
         <th>Operation</th>
       </tr>
       </thead>
@@ -34,17 +37,18 @@
       <tr v-for="chapter in chapters">
         <td>{{chapter.id}}</td>
         <td>{{chapter.name}}</td>
-        <td>{{chapter.courseId}}</td>
 
 
         <td>
           <div class="hidden-sm hidden-xs btn-group">
-            <button v-on:click="edit(chapter)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-
-            <button v-on:click="del(chapter.id)" class="btn btn-xs btn-danger">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            <button v-on:click="toSection(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+              Sections
+            </button>&nbsp;
+            <button v-on:click="edit(chapter)" class="btn btn-white btn-xs btn-info btn-round">
+              Edit
+            </button>&nbsp;
+            <button v-on:click="del(chapter.id)" class="btn btn-white btn-xs btn-warning btn-round">
+              Delete
             </button>
           </div>
 
@@ -223,7 +227,16 @@
                         }
                     })
                 });
-            }
+            },
+
+            /**
+             * navigate to sections
+             */
+            toSection(chapter) {
+                let _this = this;
+                SessionStorage.set("chapter", chapter);
+                _this.$router.push("/business/section");
+            },
         }
     }
 </script>

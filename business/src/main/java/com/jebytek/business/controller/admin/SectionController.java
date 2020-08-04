@@ -1,8 +1,8 @@
 package com.jebytek.business.controller.admin;
 
-import com.jebytek.server.dto.SectionDto;
-import com.jebytek.server.dto.PageDto;
 import com.jebytek.server.dto.ResponseDto;
+import com.jebytek.server.dto.SectionDto;
+import com.jebytek.server.dto.SectionPageDto;
 import com.jebytek.server.service.SectionService;
 import com.jebytek.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +19,12 @@ public class SectionController {
     * retrieve all sections
     * */
     @PostMapping("/list")
-    public ResponseDto list(@RequestBody PageDto pageDto) {
+    public ResponseDto list(@RequestBody SectionPageDto sectionPageDto) {
         ResponseDto responseDto = new ResponseDto();
-        sectionService.list(pageDto);
-        responseDto.setContent(pageDto);
+        ValidatorUtil.require(sectionPageDto.getCourseId(), "Course ID");
+        ValidatorUtil.require(sectionPageDto.getChapterId(), "Chapter ID");
+        sectionService.list(sectionPageDto);
+        responseDto.setContent(sectionPageDto);
         return responseDto;
     }
 
