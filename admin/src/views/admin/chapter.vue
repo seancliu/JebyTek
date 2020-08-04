@@ -1,6 +1,12 @@
 <template>
   <div>
+    <h3>{{course.name}}</h3>
     <p>
+      <router-link to="/business/course" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        Back
+      </router-link>
+      &nbsp;
       <button v-on:click="add()" class="btn btn-white btn-default btn-round">
         <i class="ace-icon fa fa-edit"></i>
         Add
@@ -123,13 +129,19 @@
         data: function() {
             return {
                 chapter: {},
-                chapters: []
+                chapters: [],
+                course: {},
             }
         },
 
         mounted: function() {
             let _this = this;
             _this.$refs.pagination.size = 10;
+            let course = SessionStorage.get("course" || {});
+            if (Tool.isEmpty(course)) {
+                _this.$router.push("/dashboard");
+            }
+            _this.course = course;
             _this.list(1);
             // this.$parent.activateSidebar("business-chapter-sidebar")
         },
