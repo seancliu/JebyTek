@@ -24,6 +24,9 @@ public class SectionService {
     @Resource
     private SectionMapper sectionMapper;
 
+    @Resource
+    private CourseService courseService;
+
     /*
     * retrieve sections
     * */
@@ -63,6 +66,7 @@ public class SectionService {
         } else {
             this.update(section);
         }
+        courseService.updateTime(sectionDto.getCourseId());
     }
 
     private void insert(Section section) {
