@@ -29,7 +29,7 @@
 
             <th>VIDEO</th>
 
-            <th>TIME IN SECS</th>
+            <th>LENGTH</th>
 
             <th>PRICE</th>
 
@@ -45,7 +45,7 @@
           <td>{{section.id}}</td>
           <td>{{section.title}}</td>
           <td>{{section.video}}</td>
-          <td>{{section.length}}</td>
+          <td>{{section.length | formatSecond}}</td>
           <td>{{CHARGE | optionKV(section.charge)}}</td>
           <td>{{section.idx}}</td>
 
