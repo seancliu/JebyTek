@@ -3,9 +3,9 @@
     <div class="row">
       <div class="col-md-6">
         <p>
-          <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+          <button v-on:click="add1()" class="btn btn-white btn-default btn-round">
             <i class="ace-icon fa fa-edit"></i>
-            Add
+            Add Category
           </button>
           &nbsp;
           <button v-on:click="all()" class="btn btn-white btn-default btn-round">
@@ -86,9 +86,9 @@
       </div>
       <div class="col-md-6">
         <p>
-          <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+          <button v-on:click="add2()" class="btn btn-white btn-default btn-round">
             <i class="ace-icon fa fa-edit"></i>
-            Add
+            Add Subcategory
           </button>
         </p>
 
@@ -179,7 +179,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Parent ID</label>
                   <div class="col-sm-10">
-                    <input v-model="category.parent" class="form-control">
+                    <p class="form-control-static">{{active.name || "None"}}</p>
                   </div>
                 </div>
                 <div class="form-group">
@@ -226,6 +226,34 @@
             // this.$parent.activateSidebar("business-category-sidebar")
         },
         methods: {
+            /**
+             * Click add category
+             */
+            add1() {
+                let _this = this;
+                _this.active = {};
+                _this.level2 = [];
+                _this.category = {
+                    parent: "00000000"
+                };
+                $("#form-modal").modal("show");
+            },
+
+            /**
+             * Click add subcategory
+             */
+            add2() {
+                let _this = this;
+                if (Tool.isEmpty(_this.active)) {
+                    Toast.warning("Please select a main category.");
+                    return;
+                }
+                _this.category = {
+                    parent: _this.active.id
+                };
+                $(".modal").modal("show");
+            },
+
             add() {
                 let _this = this;
                 _this.category = {};
