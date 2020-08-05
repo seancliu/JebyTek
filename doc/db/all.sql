@@ -59,6 +59,25 @@ INSERT INTO `section` (id, title, course_id, chapter_id, video, length, charge, 
 VALUES ('00000001', 'TEST SECTION 1', '00000001', '00000000', '', 500, 'F', 1, now(), now());
 
 
+drop table if exists `category`;
+create table `category` (
+    `id` char(8) not null default '' comment 'ID',
+    `parent` char(8) not null default '' comment 'Parent ID',
+    `name` varchar(50) not null comment 'Name',
+    `idx` int comment 'Index',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='CATEGORY';
+
+insert into `category` (id, parent, name, idx) values ('00000100', '00000000', 'Algorithms', 100);
+insert into `category` (id, parent, name, idx) values ('00000101', '00000100', 'Sort', 101);
+insert into `category` (id, parent, name, idx) values ('00000102', '00000100', 'Greedy', 102);
+insert into `category` (id, parent, name, idx) values ('00000103', '00000100', 'Dynamic Programming', 103);
+insert into `category` (id, parent, name, idx) values ('00000200', '00000000', 'Operating Systems', 200);
+insert into `category` (id, parent, name, idx) values ('00000201', '00000200', 'Thread/Process', 201);
+insert into `category` (id, parent, name, idx) values ('00000202', '00000200', 'Deadlock', 202);
+
+
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
