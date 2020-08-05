@@ -23,7 +23,18 @@ public class CategoryService {
     private CategoryMapper categoryMapper;
 
     /*
-    * retrieve categorys
+    * retrieve categories
+    * */
+    public List<CategoryDto> all() {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("idx asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+        List<CategoryDto> categoryDtoList = CopyUtil.copyList(categoryList, CategoryDto.class);
+        return categoryDtoList;
+    }
+
+    /*
+    * retrieve categories
     * */
     public void list(PageDto pageDto) {
         PageHelper.startPage(pageDto.getPage(), pageDto.getSize());
