@@ -12,6 +12,7 @@ import com.jebytek.server.util.CopyUtil;
 import com.jebytek.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -59,7 +60,8 @@ public class SectionService {
      * when id is empty, insert;
      * when id is not empty, update
      * */
-    public void save(SectionDto sectionDto) {
+    @Transactional
+    public void save(SectionDto sectionDto){
         Section section = CopyUtil.copy(sectionDto, Section.class);
         if (StringUtils.isEmpty(sectionDto.getId())) {
             this.insert(section);
