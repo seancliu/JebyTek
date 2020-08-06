@@ -178,12 +178,14 @@
             add() {
                 let _this = this;
                 _this.course = {};
+                _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
             },
 
             edit(course) {
                 let _this = this;
                 _this.course = $.extend({}, course);
+                _this.listCategory(course.id);
                 $("#form-modal").modal("show");
             },
 
@@ -302,6 +304,31 @@
                 let zNodes = _this.categories;
 
                 _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
+
+                // expand all categories
+                _this.tree.expandAll(true);
+            },
+
+            /**
+             * query all categories related to given courseId
+             * @param courseId
+             */
+            listCategory(courseId) {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/list-category/' + courseId).then((res)=>{
+                    Loading.hide();
+                    console.log("All categories：", res);
+                    let response = res.data;
+                    let categorys = response.content;
+
+                    // check all categories in the result
+                    _this.tree.checkAllNodes(false);
+                    for (let i = 0; i < categorys.length; i++) {
+                        let node = _this.tree.getNodeByParam("id", categorys[i].categoryId);
+                        _this.tree.checkNode(node, true);
+                    }
+                })
             },
         }
     }

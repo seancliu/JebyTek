@@ -12,6 +12,7 @@ import com.jebytek.server.util.CopyUtil;
 import com.jebytek.server.util.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -55,6 +56,7 @@ public class CourseService {
      * when id is empty, insert;
      * when id is not empty, update
      * */
+    @Transactional
     public void save(CourseDto courseDto) {
         Course course = CopyUtil.copy(courseDto, Course.class);
         if (StringUtils.isEmpty(courseDto.getId())) {

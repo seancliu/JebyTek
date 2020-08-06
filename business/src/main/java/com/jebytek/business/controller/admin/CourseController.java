@@ -1,19 +1,25 @@
 package com.jebytek.business.controller.admin;
 
+import com.jebytek.server.dto.CourseCategoryDto;
 import com.jebytek.server.dto.CourseDto;
 import com.jebytek.server.dto.PageDto;
 import com.jebytek.server.dto.ResponseDto;
+import com.jebytek.server.service.CourseCategoryService;
 import com.jebytek.server.service.CourseService;
 import com.jebytek.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/course")
 public class CourseController {
     @Resource
     private CourseService courseService;
+
+    @Resource
+    private CourseCategoryService courseCategoryService;
 
     /*
     * retrieve all courses
@@ -53,6 +59,18 @@ public class CourseController {
     public ResponseDto delete(@PathVariable String id) {
         ResponseDto responseDto = new ResponseDto();
         courseService.delete(id);
+        return responseDto;
+    }
+
+    /**
+     * query all categories related to given course
+     * @param courseId
+     */
+    @PostMapping("/list-category/{courseId}")
+    public ResponseDto listCategory(@PathVariable(value = "courseId") String courseId) {
+        ResponseDto responseDto = new ResponseDto();
+        List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
+        responseDto.setContent(dtoList);
         return responseDto;
     }
 }
