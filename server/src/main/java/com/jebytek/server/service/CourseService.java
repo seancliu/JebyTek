@@ -27,6 +27,9 @@ public class CourseService {
     @Resource
     private MyCourseMapper myCourseMapper;
 
+    @Resource
+    private CourseCategoryService courseCategoryService;
+
     /*
     * retrieve courses
     * */
@@ -59,6 +62,9 @@ public class CourseService {
         } else {
             this.update(course);
         }
+
+        // save categories
+        courseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
     }
 
     private void insert(Course course) {

@@ -163,6 +163,7 @@
                 COURSE_CHARGE: COURSE_CHARGE,
                 COURSE_STATUS: COURSE_STATUS,
                 categories: [],
+                tree: {},
             }
         },
 
@@ -219,6 +220,12 @@
                   return;
                 }
 
+                let categorys = _this.tree.getCheckedNodes();
+                if (Tool.isEmpty(categorys)) {
+                    Toast.warning("Please select categories");
+                    return;
+                }
+                _this.course.categorys = categorys;
                 Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/course/save', _this.course).then((response)=>{
                     Loading.hide();
@@ -294,7 +301,7 @@
 
                 let zNodes = _this.categories;
 
-                $.fn.zTree.init($("#tree"), setting, zNodes);
+                _this.tree = $.fn.zTree.init($("#tree"), setting, zNodes);
             },
         }
     }

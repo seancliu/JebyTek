@@ -76,7 +76,14 @@ insert into `category` (id, parent, name, idx) values ('00000200', '00000000', '
 insert into `category` (id, parent, name, idx) values ('00000201', '00000200', 'Thread/Process', 201);
 insert into `category` (id, parent, name, idx) values ('00000202', '00000200', 'Deadlock', 202);
 
-
+# course-category relationship
+drop table if exists `course_category`;
+create table `course_category` (
+    `id` char(8) not null default '' comment 'ID',
+    `course_id` char(8) comment 'Course|course.id',
+    `category_id` char(8) comment 'Category|course.id',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='CourseCategory';
 
 drop table if exists `test`;
 CREATE TABLE `test`  (
