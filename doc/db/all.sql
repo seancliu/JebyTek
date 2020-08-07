@@ -85,6 +85,14 @@ create table `course_category` (
     primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='CourseCategory';
 
+# course content
+drop table if exists `course_content`;
+create table `course_content` (
+    `id` char(8) not null default '' comment 'CourseID',
+    `content` mediumtext not null comment 'Course Content',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='CourseContent';
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
