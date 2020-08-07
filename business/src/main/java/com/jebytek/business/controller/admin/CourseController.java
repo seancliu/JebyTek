@@ -1,9 +1,6 @@
 package com.jebytek.business.controller.admin;
 
-import com.jebytek.server.dto.CourseCategoryDto;
-import com.jebytek.server.dto.CourseDto;
-import com.jebytek.server.dto.PageDto;
-import com.jebytek.server.dto.ResponseDto;
+import com.jebytek.server.dto.*;
 import com.jebytek.server.service.CourseCategoryService;
 import com.jebytek.server.service.CourseService;
 import com.jebytek.server.util.ValidatorUtil;
@@ -71,6 +68,21 @@ public class CourseController {
         ResponseDto responseDto = new ResponseDto();
         List<CourseCategoryDto> dtoList = courseCategoryService.listByCourse(courseId);
         responseDto.setContent(dtoList);
+        return responseDto;
+    }
+
+    @GetMapping("/search-content/{id}")
+    public ResponseDto searchContent(@PathVariable String id) {
+        ResponseDto responseDto = new ResponseDto();
+        CourseContentDto courseContentDto = courseService.searchContent(id);
+        responseDto.setContent(courseContentDto);
+        return responseDto;
+    }
+
+    @PostMapping("/save-content")
+    public ResponseDto saveContent(@RequestBody CourseContentDto courseContentDto) {
+        ResponseDto responseDto = new ResponseDto();
+        courseService.saveContent(courseContentDto);
         return responseDto;
     }
 }

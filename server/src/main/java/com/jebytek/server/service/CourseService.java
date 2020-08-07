@@ -3,9 +3,12 @@ package com.jebytek.server.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jebytek.server.domain.Course;
+import com.jebytek.server.domain.CourseContent;
 import com.jebytek.server.domain.CourseExample;
+import com.jebytek.server.dto.CourseContentDto;
 import com.jebytek.server.dto.CourseDto;
 import com.jebytek.server.dto.PageDto;
+import com.jebytek.server.mapper.CourseContentMapper;
 import com.jebytek.server.mapper.CourseMapper;
 import com.jebytek.server.mapper.customized.MyCourseMapper;
 import com.jebytek.server.util.CopyUtil;
@@ -30,6 +33,9 @@ public class CourseService {
 
     @Resource
     private CourseCategoryService courseCategoryService;
+
+    @Resource
+    private CourseContentMapper courseContentMapper;
 
     /*
     * retrieve courses
@@ -88,5 +94,28 @@ public class CourseService {
 
     public void updateTime(String courseId) {
         myCourseMapper.updateTime(courseId);
+    }
+
+    /**
+     * Search course content
+     */
+    public CourseContentDto searchContent(String id) {
+        CourseContent content = courseContentMapper.selectByPrimaryKey(id);
+        if (content == null) {
+            return null;
+        }
+        return CopyUtil.copy(content, CourseContentDto.class);
+    }
+
+    /**
+     * Save course content (Insert & Update)
+     */
+    public int saveContent(CourseContentDto contentDto) {
+        CourseContent content = CopyUtil.copy(contentDto, CourseContent.class);
+        int i = courseContentMapper.updateByPrimaryKeyWithBLOBs(content);
+        if (i == 0) {
+            i = courseContentMapper.insert(content);
+        }
+        return i;
     }
 }
