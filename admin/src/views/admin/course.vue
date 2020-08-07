@@ -161,6 +161,11 @@
             <form class="form-horizontal">
               <div class="form-group">
                 <div class="col-lg-12">
+                  {{saveContentLabel}}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-lg-12">
                   <div id="content"></div>
                 </div>
               </div>
@@ -197,6 +202,7 @@
                 COURSE_STATUS: COURSE_STATUS,
                 categories: [],
                 tree: {},
+                saveContentLabel: "",
             }
         },
 
@@ -377,6 +383,7 @@
                 });
                 // 先清空历史文本
                 $("#content").summernote('code', '');
+                _this.saveContentLabel = "";
                 Loading.show();
                 _this.$ajax.get(process.env.VUE_APP_SERVER + '/business/admin/course/search-content/' + id).then((response)=>{
                     Loading.hide();
@@ -387,6 +394,14 @@
                         if (resp.content) {
                             $("#content").summernote('code', resp.content.content);
                         }
+                        // 定时自动保存
+                        let saveContentInterval = setInterval(function() {
+                            _this.saveContent();
+                        }, 5000);
+                        // 关闭内容框时，清空自动保存任务
+                        $('#course-content-modal').on('hidden.bs.modal', function (e) {
+                            clearInterval(saveContentInterval);
+                        })
                     } else {
                         Toast.warning(resp.message);
                     }
@@ -406,7 +421,9 @@
                     Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
-                        Toast.success("Content saved!");
+                        // Toast.success("Content saved!");
+                        let now = Tool.dateFormat("yyyy-MM-dd hh:mm:ss");
+                        _this.saveContentLabel = "Saved at: " + now;
                     } else {
                         Toast.warning(resp.message);
                     }
