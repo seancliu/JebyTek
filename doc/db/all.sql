@@ -93,6 +93,19 @@ create table `course_content` (
     primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='CourseContent';
 
+# instructor
+drop table if exists `instructor`;
+create table `instructor` (
+    `id` char(8) not null default '' comment 'ID',
+    `name` varchar(50) not null comment 'Name',
+    `alias` varchar(50) comment 'Alias',
+    `avatar` varchar(100) comment 'Avatar',
+    `title` varchar(50) comment 'Title',
+    `motto` varchar(50) comment 'Motto',
+    `intro` varchar(500) comment 'Intro',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='Instructor';
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,

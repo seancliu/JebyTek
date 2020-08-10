@@ -421,6 +421,14 @@
 
                 <b class="arrow"></b>
               </li>
+              <li class="active" id="business-instructor-sidebar">
+                <router-link to="/business/instructor">
+                  <i class="menu-icon fa fa-caret-right"></i>
+                  Instructors
+                </router-link>
+
+                <b class="arrow"></b>
+              </li>
 <!--              <li class="active" id="business-chapter-sidebar">-->
 <!--                <router-link to="/business/chapter">-->
 <!--                  <i class="menu-icon fa fa-caret-right"></i>-->

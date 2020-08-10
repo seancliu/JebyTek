@@ -1,0 +1,260 @@
+<template>
+  <div>
+    <p>
+      <button v-on:click="add()" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-edit"></i>
+        Add
+      </button>
+      &nbsp;
+      <button v-on:click="list(1)" class="btn btn-white btn-default btn-round">
+        <i class="ace-icon fa fa-refresh"></i>
+        Refresh
+      </button>
+    </p>
+
+    <pagination ref="pagination" v-bind:list="list"></pagination>
+
+    <table id="simple-table" class="table  table-bordered table-hover">
+      <thead>
+      <tr>
+            <th>ID</th>
+
+            <th>Name</th>
+
+            <th>Alias</th>
+
+            <th>Avatar</th>
+
+            <th>Title</th>
+
+            <th>Motto</th>
+
+            <th>Intro</th>
+            <th>Operation</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr v-for="instructor in instructors">
+        <td>{{instructor.id}}</td>
+        <td>{{instructor.name}}</td>
+        <td>{{instructor.alias}}</td>
+        <td>{{instructor.avatar}}</td>
+        <td>{{instructor.title}}</td>
+        <td>{{instructor.motto}}</td>
+        <td>{{instructor.intro}}</td>
+
+
+        <td>
+          <div class="hidden-sm hidden-xs btn-group">
+            <button v-on:click="edit(instructor)" class="btn btn-xs btn-info">
+              <i class="ace-icon fa fa-pencil bigger-120"></i>
+            </button>
+
+            <button v-on:click="del(instructor.id)" class="btn btn-xs btn-danger">
+              <i class="ace-icon fa fa-trash-o bigger-120"></i>
+            </button>
+          </div>
+
+          <div class="hidden-md hidden-lg">
+            <div class="inline pos-rel">
+              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                <li>
+                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+                    <span class="blue">
+                        <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                    </span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+                    <span class="green">
+                        <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                    </span>
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+                    <span class="red">
+                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add a instructor</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Name</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.name" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Alias</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.alias" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Avatar</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.avatar" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Title</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.title" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Motto</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.motto" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">Intro</label>
+                  <div class="col-sm-10">
+                    <input v-model="instructor.intro" class="form-control">
+                  </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button v-on:click="save()" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+
+</template>
+
+<script>
+    import Pagination from "../../components/pagination";
+    export default {
+        components: {Pagination},
+        name: 'business-instructor',
+        data: function() {
+            return {
+                instructor: {},
+                instructors: [],
+            }
+        },
+
+        mounted: function() {
+            let _this = this;
+            _this.$refs.pagination.size = 10;
+            _this.list(1);
+            // this.$parent.activateSidebar("business-instructor-sidebar")
+        },
+        methods: {
+            add() {
+                let _this = this;
+                _this.instructor = {};
+                $("#form-modal").modal("show");
+            },
+
+            edit(instructor) {
+                let _this = this;
+                _this.instructor = $.extend({}, instructor);
+                $("#form-modal").modal("show");
+            },
+
+            /*
+            * get all instructors
+            * */
+            list(page) {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/instructor/list', {
+                    page: page,
+                    size: _this.$refs.pagination.size,
+                }).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    _this.instructors = resp.content.list;
+                    _this.$refs.pagination.render(page, resp.content.total);
+                })
+            },
+
+            /*
+            * save change to a instructor
+            * */
+            save() {
+                let _this = this;
+
+                //save validation
+                if (1 != 1
+                    || !Validator.require(_this.instructor.name, "Name")
+                    || !Validator.length(_this.instructor.name, "Name", 1, 50)
+                    || !Validator.length(_this.instructor.alias, "Alias", 1, 50)
+                    || !Validator.length(_this.instructor.avatar, "Avatar", 1, 100)
+                    || !Validator.length(_this.instructor.title, "Title", 1, 50)
+                    || !Validator.length(_this.instructor.motto, "Motto", 1, 50)
+                    || !Validator.length(_this.instructor.intro, "Intro", 1, 500)
+                ) {
+                  return;
+                }
+
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/instructor/save', _this.instructor).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    if (resp.success) {
+                        $("#form-modal").modal("hide");
+                        _this.list(1);
+                        Toast.success("Saved successfully!");
+                    } else {
+                        Toast.warning(resp.message)
+                    }
+                })
+            }       ,
+
+            /*
+            * delete a instructor
+            * */
+            del(id) {
+                let _this = this;
+                Confirm.show("You won't be able to revert this!", function () {
+                    Loading.show();
+                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/instructor/delete/' + id).then((response)=>{
+                        Loading.hide();
+                        let resp = response.data;
+                        if (resp.success) {
+                            _this.list(1);
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }
+                    })
+                });
+            }
+        }
+    }
+</script>
