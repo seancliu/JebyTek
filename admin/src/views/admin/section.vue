@@ -192,7 +192,7 @@
             _this.course = course;
             _this.chapter = chapter;
             _this.list(1);
-            // this.$parent.activateSidebar("business-section-sidebar")
+            this.$parent.activateSidebar("business-course-sidebar")
         },
         methods: {
             add() {

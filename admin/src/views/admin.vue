@@ -421,22 +421,22 @@
 
                 <b class="arrow"></b>
               </li>
-              <li class="active" id="business-chapter-sidebar">
-                <router-link to="/business/chapter">
-                  <i class="menu-icon fa fa-caret-right"></i>
-                  Chapters
-                </router-link>
+<!--              <li class="active" id="business-chapter-sidebar">-->
+<!--                <router-link to="/business/chapter">-->
+<!--                  <i class="menu-icon fa fa-caret-right"></i>-->
+<!--                  Chapters-->
+<!--                </router-link>-->
 
-                <b class="arrow"></b>
-              </li>
-              <li class="active" id="business-section-sidebar">
-                <router-link to="/business/section">
-                  <i class="menu-icon fa fa-caret-right"></i>
-                  Sections
-                </router-link>
+<!--                <b class="arrow"></b>-->
+<!--              </li>-->
+<!--              <li class="active" id="business-section-sidebar">-->
+<!--                <router-link to="/business/section">-->
+<!--                  <i class="menu-icon fa fa-caret-right"></i>-->
+<!--                  Sections-->
+<!--                </router-link>-->
 
-                <b class="arrow"></b>
-              </li>
+<!--                <b class="arrow"></b>-->
+<!--              </li>-->
             </ul>
           </li>
 
