@@ -1,0 +1,4 @@
+/*Display text in the middle*/
+.table td {
+    vertical-align: middle !important;
+}
