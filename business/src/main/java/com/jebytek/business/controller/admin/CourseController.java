@@ -85,4 +85,11 @@ public class CourseController {
         courseService.saveContent(courseContentDto);
         return responseDto;
     }
+
+    @RequestMapping("/idx")
+    public ResponseDto idx(@RequestBody IdxDto idxDto) {
+        ResponseDto responseDto = new ResponseDto();
+        courseService.idx(idxDto);
+        return responseDto;
+    }
 }

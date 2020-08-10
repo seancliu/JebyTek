@@ -7,6 +7,7 @@ import com.jebytek.server.domain.CourseContent;
 import com.jebytek.server.domain.CourseExample;
 import com.jebytek.server.dto.CourseContentDto;
 import com.jebytek.server.dto.CourseDto;
+import com.jebytek.server.dto.IdxDto;
 import com.jebytek.server.dto.PageDto;
 import com.jebytek.server.mapper.CourseContentMapper;
 import com.jebytek.server.mapper.CourseMapper;
@@ -72,7 +73,7 @@ public class CourseService {
         }
 
         // save categories
-        courseCategoryService.saveBatch(courseDto.getId(), courseDto.getCategorys());
+        courseCategoryService.saveBatch(course.getId(), courseDto.getCategorys());
     }
 
     private void insert(Course course) {
@@ -117,5 +118,25 @@ public class CourseService {
             i = courseContentMapper.insert(content);
         }
         return i;
+    }
+
+    /**
+     * Edit Index
+     * @param idxDto
+     */
+    @Transactional
+    public void idx(IdxDto idxDto) {
+        // Update current index
+        myCourseMapper.updateIdx(idxDto);
+
+        // if increase current index
+        if (idxDto.getNewIdx() > idxDto.getCurIdx()) {
+            myCourseMapper.moveIdxForward(idxDto);
+        }
+
+        // if decrease current index
+        if (idxDto.getNewIdx() < idxDto.getCurIdx()) {
+            myCourseMapper.moveIdxBackward(idxDto);
+        }
     }
 }

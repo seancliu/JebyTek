@@ -45,6 +45,9 @@
               <button v-on:click="editContent(course)" class="btn btn-white btn-xs btn-info btn-round">
                 Content
               </button>&nbsp;
+              <button v-on:click="openIdxModal(course)" class="btn btn-white btn-xs btn-info btn-round">
+                Index
+              </button>&nbsp;
               <button v-on:click="edit(course)" class="btn btn-white btn-xs btn-info btn-round">
                 Edit
               </button>&nbsp;
@@ -137,7 +140,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Index</label>
                   <div class="col-sm-10">
-                    <input v-model="course.idx" class="form-control">
+                    <input v-model="course.idx" class="form-control" disabled>
                   </div>
                 </div>
             </form>
@@ -184,6 +187,47 @@
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="course-idx-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Index</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  Current Index
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="idx.curIdx" name="curIdx" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-lg-3">
+                  New Index
+                </label>
+                <div class="col-lg-9">
+                  <input class="form-control" v-model="idx.newIdx" name="newIdx">
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-white btn-default btn-round" data-dismiss="modal">
+              <i class="ace-icon fa fa-times"></i>
+              Cancel
+            </button>
+            <button type="button" class="btn btn-white btn-info btn-round" v-on:click="updateIdx()">
+              <i class="ace-icon fa fa-plus blue"></i>
+              Update
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 
 </template>
@@ -203,6 +247,11 @@
                 categories: [],
                 tree: {},
                 saveContentLabel: "",
+                idx: {
+                    id: "",
+                    curIdx: 0,
+                    newIdx: 0
+                },
             }
         },
 
@@ -216,7 +265,9 @@
         methods: {
             add() {
                 let _this = this;
-                _this.course = {};
+                _this.course = {
+                    sort: _this.$refs.pagination.total + 1
+                };
                 _this.tree.checkAllNodes(false);
                 $("#form-modal").modal("show");
             },
@@ -426,6 +477,39 @@
                         _this.saveContentLabel = "Saved at: " + now;
                     } else {
                         Toast.warning(resp.message);
+                    }
+                });
+            },
+
+            openIdxModal(course) {
+                let _this = this;
+                _this.idx = {
+                    id: course.id,
+                    curIdx: course.idx,
+                    newIdx: course.idx
+                };
+                $("#course-idx-modal").modal("show");
+            },
+
+            /**
+             * update index
+             */
+            updateIdx() {
+                let _this = this;
+                if (_this.idx.newIdx === _this.idx.curIdx) {
+                    Toast.warning("Index doesn't change!");
+                    return;
+                }
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + "/business/admin/course/idx", _this.idx).then((res) => {
+                    let response = res.data;
+
+                    if (response.success) {
+                        Toast.success("Index updated!");
+                        $("#course-sort-modal").modal("hide");
+                        _this.list(1);
+                    } else {
+                        Toast.error("Update failed!");
                     }
                 });
             }
