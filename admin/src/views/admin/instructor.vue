@@ -14,86 +14,50 @@
 
     <pagination ref="pagination" v-bind:list="list"></pagination>
 
-    <table id="simple-table" class="table  table-bordered table-hover">
-      <thead>
-      <tr>
-            <th>ID</th>
+    <div class="row">
+      <div v-for="instructor in instructors" class="col-md-3 center">
+        <div>
+          <span class="profile-picture">
+            <img v-show="!instructor.avatar" class="editable img-responsive editable-click editable-empty" src="/ace/assets/images/avatars/profile-pic.jpg" v-bind:title="instructor.intro"/>
+            <img v-show="instructor.avatar" class="media-object" v-bind:src="instructor.avatar" v-bind:title="instructor.intro"/>
+          </span>
 
-            <th>Name</th>
+          <div class="space-4"></div>
 
-            <th>Alias</th>
-
-            <th>Avatar</th>
-
-            <th>Title</th>
-
-            <th>Motto</th>
-
-            <th>Intro</th>
-            <th>Operation</th>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr v-for="instructor in instructors">
-        <td>{{instructor.id}}</td>
-        <td>{{instructor.name}}</td>
-        <td>{{instructor.alias}}</td>
-        <td>{{instructor.avatar}}</td>
-        <td>{{instructor.title}}</td>
-        <td>{{instructor.motto}}</td>
-        <td>{{instructor.intro}}</td>
-
-
-        <td>
-          <div class="hidden-sm hidden-xs btn-group">
-            <button v-on:click="edit(instructor)" class="btn btn-xs btn-info">
-              <i class="ace-icon fa fa-pencil bigger-120"></i>
-            </button>
-
-            <button v-on:click="del(instructor.id)" class="btn btn-xs btn-danger">
-              <i class="ace-icon fa fa-trash-o bigger-120"></i>
-            </button>
-          </div>
-
-          <div class="hidden-md hidden-lg">
-            <div class="inline pos-rel">
-              <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                <li>
-                  <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-                    <span class="blue">
-                        <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                    </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-                    <span class="green">
-                        <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                    </span>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-                    <span class="red">
-                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                    </span>
-                  </a>
-                </li>
-              </ul>
+          <div class="width-85 label label-info label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+              <a href="javascript:;" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                <i class="ace-icon fa fa-circle light-green"></i>
+                &nbsp;
+                <span class="white">{{instructor.title}}</span>
+              </a>
             </div>
           </div>
-        </td>
-      </tr>
+        </div>
 
-      </tbody>
-    </table>
+        <div class="space-6"></div>
+
+        <a href="javascript:;" class="text-info bigger-110" v-bind:title="instructor.motto">
+          <i class="ace-icon fa fa-user"></i>
+          {{instructor.name}}&nbsp;({{instructor.alias}})
+        </a>
+
+        <div class="space-6"></div>
+
+        <div class="profile-social-links align-center">
+          <button v-on:click="edit(instructor)" class="btn btn-xs btn-info">
+            <i class="ace-icon fa fa-pencil bigger-120"></i>
+          </button>
+          &nbsp;
+          <button v-on:click="del(instructor.id)" class="btn btn-xs btn-danger">
+            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+          </button>
+        </div>
+
+        <div class="hr hr16 dotted"></div>
+
+      </div>
+    </div>
 
     <div id="form-modal" class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -137,7 +101,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Intro</label>
                   <div class="col-sm-10">
-                    <input v-model="instructor.intro" class="form-control">
+                    <textarea v-model="instructor.intro" class="form-control" rows="5"></textarea>
                   </div>
                 </div>
             </form>
