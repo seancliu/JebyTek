@@ -84,6 +84,14 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="col-sm-2 control-label">Instructor</label>
+                  <div class="col-sm-10">
+                    <select v-model="course.instructorId" class="form-control">
+                      <option v-for="o in instructors" v-bind:value="o.id">{{o.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-2 control-label">Description</label>
                   <div class="col-sm-10">
                     <input v-model="course.description" class="form-control">
@@ -252,6 +260,7 @@
                     curIdx: 0,
                     newIdx: 0
                 },
+                instructors: [],
             }
         },
 
@@ -259,6 +268,7 @@
             let _this = this;
             _this.$refs.pagination.size = 10;
             _this.allCategories();
+            _this.allInstructors();
             _this.list(1);
             // this.$parent.activateSidebar("business-course-sidebar")
         },
@@ -512,6 +522,16 @@
                         Toast.error("Update failed!");
                     }
                 });
+            },
+
+            allInstructors() {
+                let _this = this;
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/instructor/all').then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    _this.instructors = resp.content;
+                })
             }
         }
     }

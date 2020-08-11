@@ -77,6 +77,8 @@ public class CourseDto {
 
     private List<CategoryDto> categorys;
 
+    private String instructorId;
+
     public String getId() {
         return id;
     }
@@ -189,6 +191,14 @@ public class CourseDto {
         this.categorys = categorys;
     }
 
+    public String getInstructorId() {
+        return instructorId;
+    }
+
+    public void setInstructorId(String instructorId) {
+        this.instructorId = instructorId;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CourseDto{");
@@ -206,6 +216,7 @@ public class CourseDto {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", categorys=").append(categorys);
+        sb.append(", instructorId='").append(instructorId).append('\'');
         sb.append('}');
         return sb.toString();
     }

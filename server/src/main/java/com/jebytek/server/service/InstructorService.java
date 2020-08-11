@@ -23,6 +23,16 @@ public class InstructorService {
     private InstructorMapper instructorMapper;
 
     /*
+     * retrieve categories
+     * */
+    public List<InstructorDto> all() {
+        InstructorExample instructorExample = new InstructorExample();
+        List<Instructor> instructorList = instructorMapper.selectByExample(instructorExample);
+        List<InstructorDto> instructorDtoList = CopyUtil.copyList(instructorList, InstructorDto.class);
+        return instructorDtoList;
+    }
+
+    /*
     * retrieve instructors
     * */
     public void list(PageDto pageDto) {

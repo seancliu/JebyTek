@@ -40,6 +40,8 @@ CREATE TABLE `course`  (
    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB default charset=utf8mb4 COMMENT = 'COURSE';
 
+alter table `course` add column (`instructor_id` char(8) comment 'Instructor ID');
+
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE `section` (
     `id` CHAR(8) NOT NULL DEFAULT '' COMMENT 'ID',

@@ -8,12 +8,24 @@ import com.jebytek.server.util.ValidatorUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/instructor")
 public class InstructorController {
     @Resource
     private InstructorService instructorService;
+
+    /*
+     * retrieve all categories
+     * */
+    @PostMapping("/all")
+    public ResponseDto all() {
+        ResponseDto responseDto = new ResponseDto();
+        List<InstructorDto> instructorDtoListDtoList = instructorService.all();
+        responseDto.setContent(instructorDtoListDtoList);
+        return responseDto;
+    }
 
     /*
     * retrieve all instructors
