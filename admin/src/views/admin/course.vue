@@ -29,6 +29,15 @@
             <h3 class="search-title">
               <a href="#" class="blue">{{course.name}}</a>
             </h3>
+            <div v-for="instructor in instructors.filter(inst=>{return inst.id===course.instructorId})" class="profile-activity clearfix">
+              <div>
+                <img v-show="!instructor.avatar" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
+                <img v-show="instructor.avatar" class="pull-left" v-bind:src="instructor.image">
+                <a class="user" href="#"> {{instructor.name}} </a>
+                <br>
+                {{instructor.title}}
+              </div>
+            </div>
             <p>
               <span class="blue bolder bigger-150"><i class="fa fa-usd"></i>&nbsp;{{course.price}}</span>
             </p>
@@ -36,7 +45,7 @@
             <p>
               <span class="badge badge-info">{{course.id}}</span>
               <span class="badge badge-info">Index: {{course.idx}}</span>
-              <span class="badge badge-info">Length: {{course.time | formatSecond}}</span>
+              <span class="badge badge-info">{{course.time | formatSecond}}</span>
             </p>
             <p>
               <button v-on:click="toChapter(course)" class="btn btn-white btn-xs btn-info btn-round">
@@ -540,5 +549,11 @@
 <style scoped>
   .caption h3 {
     font-size: 20px;
+  }
+
+  @media (max-width: 1199px) {
+    .caption h3 {
+      font-size: 16px;
+    }
   }
 </style>
