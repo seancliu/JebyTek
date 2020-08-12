@@ -83,7 +83,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Avatar</label>
                   <div class="col-sm-10">
-                    <input v-model="instructor.avatar" class="form-control">
+                    <input type="file" v-on:change="uploadAvatar()" id="file-upload-input">
                   </div>
                 </div>
                 <div class="form-group">
@@ -217,6 +217,18 @@
                             )
                         }
                     })
+                });
+            },
+
+            uploadAvatar() {
+                let _this = this;
+                let formData = new window.FormData();
+                // key ("file") must match the param in the controller on the backend
+                formData.append('file', document.querySelector('#file-upload-input').files[0]);
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
                 });
             }
         }
