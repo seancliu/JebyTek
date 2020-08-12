@@ -5,6 +5,7 @@ import com.jebytek.server.dto.ResponseDto;
 import com.jebytek.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,12 @@ public class UploadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileApplication.class);
     private static final String BUSINESS_NAME = "UPLOAD_FILE";
 
+    @Value("${file.domain}")
+    private String FILE_DOMAIN;
+
+    @Value("${file.path}")
+    private String FILE_PATH;
+
     @RequestMapping("/upload")
     public ResponseDto upload(@RequestParam MultipartFile file) throws IOException {
         LOG.info("Start uploading file: {}", file);
@@ -29,12 +36,13 @@ public class UploadController {
         // save file to local
         String fileName = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid(); // append uuid to avoid collision
-        String fullPath = "D:/jebytek/upload/instructor/" + key + "-" + fileName;
+        String fullPath = FILE_PATH + "instructor/" + key + "-" + fileName;
         File dest = new File(fullPath);
         file.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
 
         ResponseDto responseDto = new ResponseDto();
+        responseDto.setContent(FILE_DOMAIN + "f/instructor/" + key + "-" + fileName);
         return responseDto;
     }
 }

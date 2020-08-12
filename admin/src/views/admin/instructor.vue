@@ -19,7 +19,7 @@
         <div>
           <span class="profile-picture">
             <img v-show="!instructor.avatar" class="editable img-responsive editable-click editable-empty" src="/ace/assets/images/avatars/profile-pic.jpg" v-bind:title="instructor.intro"/>
-            <img v-show="instructor.avatar" class="media-object" v-bind:src="instructor.avatar" v-bind:title="instructor.intro"/>
+            <img v-show="instructor.avatar" class="editable img-responsive editable-click editable-empty" v-bind:src="instructor.avatar" v-bind:title="instructor.intro"/>
           </span>
 
           <div class="space-4"></div>
@@ -84,6 +84,11 @@
                   <label class="col-sm-2 control-label">Avatar</label>
                   <div class="col-sm-10">
                     <input type="file" v-on:change="uploadAvatar()" id="file-upload-input">
+                    <div v-show="instructor.avatar" class="row">
+                      <div class="col-md-4">
+                        <img v-bind:src="instructor.avatar" class="img-responsive">
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -229,6 +234,8 @@
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{
                     Loading.hide();
                     let resp = response.data;
+                    let avatar = resp.content;
+                    _this.instructor.avatar = avatar;
                 });
             }
         }
