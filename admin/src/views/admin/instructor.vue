@@ -83,7 +83,11 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Avatar</label>
                   <div class="col-sm-10">
-                    <input type="file" v-on:change="uploadAvatar()" id="file-upload-input">
+                    <button type="button" v-on:click="selectAvatar()" class="btn btn-white btn-default btn-round">
+                      <i class="ace-icon fa fa-upload"></i>
+                      Upload Avatar
+                    </button>
+                    <input class="hidden" type="file" v-on:change="uploadAvatar()" id="file-upload-input">
                     <div v-show="instructor.avatar" class="row">
                       <div class="col-md-4">
                         <img v-bind:src="instructor.avatar" class="img-responsive">
@@ -237,6 +241,10 @@
                     let avatar = resp.content;
                     _this.instructor.avatar = avatar;
                 });
+            },
+
+            selectAvatar() {
+                $("#file-upload-input").trigger("click");
             }
         }
     }
