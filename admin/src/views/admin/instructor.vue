@@ -83,11 +83,11 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Avatar</label>
                   <div class="col-sm-10">
-                    <button type="button" v-on:click="selectAvatar()" class="btn btn-white btn-default btn-round">
-                      <i class="ace-icon fa fa-upload"></i>
-                      Upload Avatar
-                    </button>
-                    <input class="hidden" type="file" ref="file" v-on:change="uploadAvatar()" id="file-upload-input">
+                    <file v-bind:id="'avatar-upload'"
+                          v-bind:text="'Upload Avatar1'"
+                          v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                          v-bind:after-upload="afterUpload">
+                    </file>
                     <div v-show="instructor.avatar" class="row">
                       <div class="col-md-4">
                         <img v-bind:src="instructor.avatar" class="img-responsive">
@@ -128,8 +128,9 @@
 
 <script>
     import Pagination from "../../components/pagination";
+    import File from "../../components/file";
     export default {
-        components: {Pagination},
+        components: {Pagination, File},
         name: 'business-instructor',
         data: function() {
             return {
@@ -229,40 +230,10 @@
                 });
             },
 
-            uploadAvatar() {
+            afterUpload(resp) {
                 let _this = this;
-                let formData = new window.FormData();
-                let file = _this.$refs.file.files[0];
-
-                // check file extension
-                let suffixs = ["jpg", "jpeg", "png"];
-                let fileName = file.name;
-                let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
-                let validateSuffix = false;
-                for (let i = 0; i < suffixs.length; i++) {
-                    if (suffixs[i].toLowerCase() == suffix) {
-                        validateSuffix = true;
-                        break;
-                    }
-                }
-                if (!validateSuffix) {
-                    Toast.warning("File type error! Please select " + suffixs.join(", "));
-                    return;
-                }
-
-                // key ("file") must match the param in the controller on the backend
-                formData.append('file', document.querySelector('#file-upload-input').files[0]);
-                Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{
-                    Loading.hide();
-                    let resp = response.data;
-                    let avatar = resp.content;
-                    _this.instructor.avatar = avatar;
-                });
-            },
-
-            selectAvatar() {
-                $("#file-upload-input").trigger("click");
+                let avatar = resp.content;
+                _this.instructor.avatar = avatar;
             }
         }
     }
