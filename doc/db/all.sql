@@ -108,6 +108,21 @@ create table `instructor` (
     primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='Instructor';
 
+-- file
+drop table if exists `file`;
+create table `file` (
+    `id` char(8) not null default '' comment 'ID',
+    `path` varchar(100) not null comment 'Relative Path',
+    `name` varchar(100) comment 'File Name',
+    `suffix` varchar(10) comment 'File Extension',
+    `size` int comment 'Size|Bit',
+    `use` char(1) comment 'Use|ENUM[FileUseEnum]: COURSE(\"C\", \"Course\"), INSTRUCTOR(\"I\", \"Instructor\")',
+    `created_at` datetime(3) comment 'Create Time',
+    `updated_at` datetime(3) comment 'Update Time',
+    primary key (`id`),
+    unique key `path_unique` (`path`)
+) engine=innodb default charset=utf8mb4 comment='File';
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
