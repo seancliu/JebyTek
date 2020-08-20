@@ -32,7 +32,7 @@
             <div v-for="instructor in instructors.filter(inst=>{return inst.id===course.instructorId})" class="profile-activity clearfix">
               <div>
                 <img v-show="!instructor.avatar" class="pull-left" src="/ace/assets/images/avatars/avatar5.png">
-                <img v-show="instructor.avatar" class="pull-left" v-bind:src="instructor.image">
+                <img v-show="instructor.avatar" class="pull-left" v-bind:src="instructor.avatar">
                 <a class="user" href="#"> {{instructor.name}} </a>
                 <br>
                 {{instructor.title}}
@@ -87,6 +87,22 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="col-sm-2 control-label">Thumb</label>
+                  <div class="col-sm-10">
+                    <file v-bind:id="'thumb-upload'"
+                          v-bind:text="'Upload Thumbnail'"
+                          v-bind:suffixs="['jpg', 'jpeg', 'png']"
+                          v-bind:use="FILE_USE.COURSE.key"
+                          v-bind:after-upload="afterUpload">
+                    </file>
+                    <div v-show="course.thumb" class="row">
+                      <div class="col-md-6">
+                        <img v-bind:src="course.thumb" class="img-responsive">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-2 control-label">Name</label>
                   <div class="col-sm-10">
                     <input v-model="course.name" class="form-control">
@@ -116,12 +132,6 @@
                   <label class="col-sm-2 control-label">Price (USD)</label>
                   <div class="col-sm-10">
                     <input v-model="course.price" class="form-control">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Thumb</label>
-                  <div class="col-sm-10">
-                    <input v-model="course.thumb" class="form-control">
                   </div>
                 </div>
                 <div class="form-group">
@@ -251,8 +261,9 @@
 
 <script>
     import Pagination from "../../components/pagination";
+    import File from "../../components/file";
     export default {
-        components: {Pagination},
+        components: {Pagination,File},
         name: 'business-course',
         data: function() {
             return {
@@ -261,6 +272,7 @@
                 COURSE_LEVEL: COURSE_LEVEL,
                 COURSE_CHARGE: COURSE_CHARGE,
                 COURSE_STATUS: COURSE_STATUS,
+                FILE_USE: FILE_USE,
                 categories: [],
                 tree: {},
                 saveContentLabel: "",
@@ -269,7 +281,7 @@
                     curIdx: 0,
                     newIdx: 0
                 },
-                instructors: [],
+                instructors: []
             }
         },
 
@@ -541,6 +553,12 @@
                     let resp = response.data;
                     _this.instructors = resp.content;
                 })
+            },
+
+            afterUpload(resp) {
+                let _this = this;
+                let thumb = resp.content.path;
+                _this.course.thumb = thumb;
             }
         }
     }
