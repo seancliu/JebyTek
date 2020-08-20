@@ -138,13 +138,13 @@
                       </file>
                       <div v-show="section.video" class="row">
                         <div class="col-md-9">
-                          <video v-bind:src="section.video" controls="controls"></video>
+                          <video v-bind:src="section.video" id="video" controls="controls"></video>
                         </div>
                       </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">TIME IN SECS</label>
+                    <label class="col-sm-2 control-label">LENGTH</label>
                     <div class="col-sm-10">
                         <input v-model="section.length" class="form-control">
                     </div>
@@ -295,6 +295,13 @@
                 let _this = this;
                 let video = resp.content.path;
                 _this.section.video = video;
+                _this.getVideoLength();
+            },
+
+            getVideoLength() {
+                let _this = this;
+                let ele = document.getElementById("video");
+                _this.section.length = parseInt(ele.duration, 10);
             }
         }
     }
