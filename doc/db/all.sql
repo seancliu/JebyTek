@@ -95,6 +95,17 @@ create table `course_content` (
     primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='CourseContent';
 
+-- course content files
+drop table if exists `course_content_file`;
+create table `course_content_file` (
+    `id` char(8) not null default '' comment 'ID',
+    `course_id` char(8) not null comment 'Course ID',
+    `url` varchar(100) comment 'URL',
+    `name` varchar(100) comment 'File Name',
+    `size` int comment 'Size (bits)',
+    primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='CourseContentFile';
+
 # instructor
 drop table if exists `instructor`;
 create table `instructor` (

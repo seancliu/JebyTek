@@ -26,4 +26,34 @@ public class FileController {
         responseDto.setContent(pageDto);
         return responseDto;
     }
+//
+//    /*
+//    * save a record
+//    * when id is empty, insert;
+//    * when id is not empty, update
+//    * */
+//    @PostMapping("/save")
+//    public ResponseDto save(@RequestBody FileDto fileDto) {
+//
+//        // saving validation
+//        ValidatorUtil.require(fileDto.getPath(), "Relative Path");
+//        ValidatorUtil.length(fileDto.getPath(), "Relative Path", 1, 100);
+//        ValidatorUtil.length(fileDto.getName(), "File Name", 1, 100);
+//        ValidatorUtil.length(fileDto.getSuffix(), "File Extension", 1, 10);
+//
+//        ResponseDto responseDto = new ResponseDto();
+//        fileService.save(fileDto);
+//        responseDto.setContent(fileDto);
+//        return responseDto;
+//    }
+//
+//    /*
+//    * delete
+//    * */
+//    @DeleteMapping("/delete/{id}")
+//    public ResponseDto delete(@PathVariable String id) {
+//        ResponseDto responseDto = new ResponseDto();
+//        fileService.delete(id);
+//        return responseDto;
+//    }
 }

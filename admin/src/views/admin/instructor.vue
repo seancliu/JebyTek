@@ -83,7 +83,7 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Avatar</label>
                   <div class="col-sm-10">
-                    <file v-bind:id="'avatar-upload'"
+                    <file v-bind:input-id="'avatar-upload'"
                           v-bind:text="'Upload Avatar'"
                           v-bind:suffixs="['jpg', 'jpeg', 'png']"
                           v-bind:use="FILE_USE.INSTRUCTOR.key"

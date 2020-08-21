@@ -58,20 +58,20 @@
             }
 
             // key ("file") must match the param in the controller on the backend
-            formData.append('file', document.querySelector('#file-upload-input').files[0]);
+            formData.append('file', file);
             formData.append('use', _this.use);
             Loading.show();
             _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{
                 Loading.hide();
                 let resp = response.data;
-                let avatar = resp.content;
                 _this.afterUpload(resp);
                 $("#" + _this.inputId + "-input").val("");
             });
         },
 
         selectFile() {
-            $("#file-upload-input").trigger("click");
+            let _this = this;
+            $("#" + _this.inputId + "-input").trigger("click");
         }
     }
   }
