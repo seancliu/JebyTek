@@ -7,7 +7,7 @@
     <hr>
 
     <file v-bind:input-id="'content-file-upload'"
-          v-bind:text="'上传文件1'"
+          v-bind:text="'Upload File'"
           v-bind:suffixs="['jpg', 'jpeg', 'png', 'mp4']"
           v-bind:use="FILE_USE.COURSE.key"
           v-bind:after-upload="afterUploadContentFile"></file>
