@@ -59,7 +59,7 @@
 
             // sharding
             let shardSize = 5 * 1024 * 1024;    // 20MB per shard
-            let shardIndex = 2;
+            let shardIndex = 1;
             let start = shardIndex * shardSize; // start index of current shard
             let end = Math.min(file.size, start + shardSize); // end index of current shard
             let fileShard = file.slice(start, end);
