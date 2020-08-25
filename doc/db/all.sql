@@ -134,6 +134,12 @@ create table `file` (
     unique key `path_unique` (`path`)
 ) engine=innodb default charset=utf8mb4 comment='File';
 
+alter table `file` add column (`shard_index` int comment 'Shard Index');
+alter table `file` add column (`shard_size` int comment 'Shard Size|Bit');
+alter table `file` add column (`shard_total` int comment 'Shard Total');
+alter table `file` add column (`key` varchar(32) comment 'File Key');
+alter table `file` add unique key_unique (`key`);
+
 drop table if exists `test`;
 CREATE TABLE `test`  (
    `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
