@@ -5,7 +5,6 @@ import com.jebytek.server.dto.FileDto;
 import com.jebytek.server.dto.ResponseDto;
 import com.jebytek.server.enums.FileUseEnum;
 import com.jebytek.server.service.FileService;
-import com.jebytek.server.util.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,12 +44,12 @@ public class UploadController {
                               Integer size,
                               Integer shardIndex,
                               Integer shardSize,
-                              Integer shardTotal) throws IOException {
+                              Integer shardTotal,
+                              String key) throws IOException {
         LOG.info("Start uploading shard...");
 
         // save shard to local
         FileUseEnum useEnum = FileUseEnum.getByCode(use);
-        String key = UuidUtil.getShortUuid(); // append uuid to avoid collision
 
         // if directory does not exist, then create
         String dir = useEnum.name().toLowerCase();
