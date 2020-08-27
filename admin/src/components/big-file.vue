@@ -41,7 +41,7 @@
             let file = _this.$refs.file.files[0];
 
             // 生成文件标识，标识多次上传的是不是同一个文件
-            let key = hex_md5(file);
+            let key = hex_md5(file.name + file.size + file.type);
             let key10 = parseInt(key, 16);
             let key62 = Tool._10to62(key10);
             console.log(key, key10, key62);
@@ -69,58 +69,70 @@
             }
 
             // sharding
-            let shardSize = 5 * 1024 * 1024;    // 20MB per shard
+            let shardSize = 5 * 1024 * 1024;    // 5MB per shard
             let shardIndex = 0;
-            let start = shardIndex * shardSize; // start index of current shard
-            let end = Math.min(file.size, start + shardSize); // end index of current shard
-            let fileShard = file.slice(start, end);
 
             let size = file.size;
             let shardTotal = Math.ceil(size / shardSize);
 
-            // // key ("shard") must match the param in the controller on the backend
-            // formData.append('shard', fileShard);
-            // formData.append('shardIndex', shardIndex);
-            // formData.append('shardSize', shardSize);
-            // formData.append('shardTotal', shardTotal);
-            // formData.append('use', _this.use);
-            // formData.append('name', file.name);
-            // formData.append('suffix', suffix);
-            // formData.append('size', size);
-            // formData.append('key', key62)
+            let param = {
+                'shardIndex': shardIndex,
+                'shardSize': shardSize,
+                'shardTotal': shardTotal,
+                'use': _this.use,
+                'name': file.name,
+                'suffix': suffix,
+                'size': size,
+                'key': key62
+            }
 
+            _this.upload(param)
+        },
+
+        upload: function (param) {
+            let _this = this;
+            let shardIndex = param.shardIndex;
+            let shardTotal = param.shardTotal;
+            let shardSize = param.shardSize;
+            let fileShard = _this.getFileShard(shardIndex, shardSize);
 
             let fileReader = new FileReader();
-            fileReader.onload = function(e) {
+            fileReader.onload = function (e) {
                 let base64 = e.target.result;
-
-                let param = {
-                    'shard': base64,
-                    'shardIndex': shardIndex,
-                    'shardSize': shardSize,
-                    'shardTotal': shardTotal,
-                    'use': _this.use,
-                    'name': file.name,
-                    'suffix': suffix,
-                    'size': size,
-                    'key': key62
-                }
+                param.shard = base64;
 
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
                     Loading.hide();
                     let resp = response.data;
-                    _this.afterUpload(resp);
-                    $("#" + _this.inputId + "-input").val("");
+                    if (shardIndex < shardTotal - 1) {
+                        // continue to upload next shard
+                        param.shardIndex = param.shardIndex + 1;
+                        _this.upload(param);
+                    } else {
+                        _this.afterUpload(resp);
+                        $("#" + _this.inputId + "-input").val("");
+                    }
+
                 });
             };
             fileReader.readAsDataURL(fileShard);
         },
 
+        getFileShard: function (shardIndex, shardSize) {
+            let _this = this;
+            let file = _this.$refs.file.files[0];
+            let start = shardIndex * shardSize; // start index of current shard
+            let end = Math.min(file.size, start + shardSize); // end index of current shard
+            let fileShard = file.slice(start, end);
+            return fileShard;
+        },
+
         selectFile() {
             let _this = this;
             $("#" + _this.inputId + "-input").trigger("click");
-        }
+        },
+
     }
   }
 </script>
