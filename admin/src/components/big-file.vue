@@ -78,23 +78,44 @@
             let size = file.size;
             let shardTotal = Math.ceil(size / shardSize);
 
-            // key ("shard") must match the param in the controller on the backend
-            formData.append('shard', fileShard);
-            formData.append('shardIndex', shardIndex);
-            formData.append('shardSize', shardSize);
-            formData.append('shardTotal', shardTotal);
-            formData.append('use', _this.use);
-            formData.append('name', file.name);
-            formData.append('suffix', suffix);
-            formData.append('size', size);
-            formData.append('key', key62)
-            Loading.show();
-            _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', formData).then((response)=>{
-                Loading.hide();
-                let resp = response.data;
-                _this.afterUpload(resp);
-                $("#" + _this.inputId + "-input").val("");
-            });
+            // // key ("shard") must match the param in the controller on the backend
+            // formData.append('shard', fileShard);
+            // formData.append('shardIndex', shardIndex);
+            // formData.append('shardSize', shardSize);
+            // formData.append('shardTotal', shardTotal);
+            // formData.append('use', _this.use);
+            // formData.append('name', file.name);
+            // formData.append('suffix', suffix);
+            // formData.append('size', size);
+            // formData.append('key', key62)
+
+
+            let fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                let base64 = e.target.result;
+                console.log(base64);
+
+                let param = {
+                    'shard': base64,
+                    'shardIndex': shardIndex,
+                    'shardSize': shardSize,
+                    'shardTotal': shardTotal,
+                    'use': _this.use,
+                    'name': file.name,
+                    'suffix': suffix,
+                    'size': size,
+                    'key': key62
+                }
+
+                Loading.show();
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response)=>{
+                    Loading.hide();
+                    let resp = response.data;
+                    _this.afterUpload(resp);
+                    $("#" + _this.inputId + "-input").val("");
+                });
+            };
+            fileReader.readAsDataURL(fileShard);
         },
 
         selectFile() {
