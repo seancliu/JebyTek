@@ -35,7 +35,7 @@ public class UploadController {
     private FileService fileService;
 
     @RequestMapping("/upload")
-    public ResponseDto upload(@RequestBody FileDto fileDto) throws IOException {
+    public ResponseDto upload(@RequestBody FileDto fileDto) throws Exception {
         LOG.info("Start uploading shard...");
 
         String use = fileDto.getUse();
@@ -58,10 +58,12 @@ public class UploadController {
                 .append(File.separator)
                 .append(key)
                 .append(".")
-                .append(suffix)
+                .append(suffix).toString(); // eg: course/2uIOLxr8kACgESC8mg4sAw.mp4
+        String localPath = new StringBuilder(path)
                 .append(".")
-                .append(fileDto.getShardIndex()).toString();
-        String fullPath = FILE_PATH + path;
+                .append(fileDto.getShardIndex()).toString(); // eg: course/2uIOLxr8kACgESC8mg4sAw.mp4.0
+
+        String fullPath = FILE_PATH + localPath;
         File dest = new File(fullPath);
         shard.transferTo(dest);
         LOG.info(dest.getAbsolutePath());
@@ -73,34 +75,29 @@ public class UploadController {
         ResponseDto responseDto = new ResponseDto();
         fileDto.setPath(FILE_DOMAIN + path);
         responseDto.setContent(fileDto);
+
+        if (fileDto.getShardIndex() == fileDto.getShardTotal() - 1) {
+            this.merge(fileDto);
+        }
         return responseDto;
     }
 
-    @GetMapping("/merge")
-    public ResponseDto merge() throws Exception {
-        File newFile = new File(FILE_PATH + "/course/merge_test.mp4");
+    public void merge(FileDto fileDto) throws Exception {
+        LOG.info("Shards Merging Starts...");
+        String path = fileDto.getPath().replace(FILE_DOMAIN, "");
+        int shardTotal = fileDto.getShardTotal();
+        File newFile = new File(FILE_PATH + path);
         FileOutputStream fileOutputStream = new FileOutputStream(newFile, true); // support appending data
         FileInputStream fileInputStream = null;
         byte[] buffer = new byte[10 * 1024 * 1024];
         int len;
 
         try {
-            // read 1st shard
-            fileInputStream = new FileInputStream(new File(FILE_PATH + "/course/wrAIwDHQ.blob"));
-            while ((len = fileInputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, len);
-            }
-
-            // read 2nd shard
-            fileInputStream = new FileInputStream(new File(FILE_PATH + "/course/d556nXPq.blob"));
-            while ((len = fileInputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, len);
-            }
-
-            // read 3rd shard
-            fileInputStream = new FileInputStream(new File(FILE_PATH + "/course/J3GUPmis.blob"));
-            while ((len = fileInputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, len);
+            for (int i = 0; i < shardTotal; i++) {
+                fileInputStream = new FileInputStream(new File(FILE_PATH + path + "." + i));
+                while ((len = fileInputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             LOG.error("Shard Merging Error", e);
@@ -115,7 +112,8 @@ public class UploadController {
                 LOG.error("IO Stream Closing Error", e);
             }
         }
-        ResponseDto responseDto = new ResponseDto();
-        return responseDto;
+        LOG.info("Shards Merging Completed.");
+
+
     }
 }
