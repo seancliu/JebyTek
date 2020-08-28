@@ -115,5 +115,17 @@ public class UploadController {
         LOG.info("Shards Merging Completed.");
 
 
+        // merging completed, then delete shards
+        System.gc();
+        Thread.sleep(100);
+
+        LOG.info("Start Deleting Shards...");
+        for (int i = 0; i < shardTotal; i++) {
+            String filePath = FILE_PATH + path + "." + i;
+            File file = new File(filePath);
+            boolean result = file.delete();
+            LOG.info("Delete{} -- {}", filePath, result ? "SUCCESS" : "FAIL");
+        }
+        LOG.info("Shards Deleted.");
     }
 }
