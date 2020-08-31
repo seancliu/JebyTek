@@ -128,4 +128,13 @@ public class UploadController {
         }
         LOG.info("Shards Deleted.");
     }
+
+    @GetMapping("/check/{key}")
+    public ResponseDto check(@PathVariable String key) {
+        LOG.info("Start Checking Shards: {}", key);
+        ResponseDto responseDto = new ResponseDto();
+        FileDto fileDto = fileService.findByKey(key);
+        responseDto.setContent(fileDto);
+        return responseDto;
+    }
 }

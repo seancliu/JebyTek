@@ -89,6 +89,29 @@
             _this.upload(param)
         },
 
+        check: function (param) {
+            let _this = this;
+            _this.$ajax.get(process.env.VUE_APP_SERVER + '/file/admin/check/' + param.key)
+                .then((response)=>{
+                    let resp = response.content;
+                    if (resp.success) {
+                        let obj = resp.content;
+                        if (!obj) {
+                            param.shardIndex = 0;
+                            console.log("No related shards found. Upload from shard 0.");
+                            _this.upload(param);
+                        } else {
+                            param.shardIndex = obj.shardIndex + 1;
+                            console.log("Start uploading from shard " + param.shardIndex);
+                            _this.upload(param);
+                        }
+                    } else {
+                        Toast.warning("Upload failed");
+                        $("#" + _this.inputId + "-input").val("");
+                    }
+                });
+        },
+
         upload: function (param) {
             let _this = this;
             let shardIndex = param.shardIndex;
