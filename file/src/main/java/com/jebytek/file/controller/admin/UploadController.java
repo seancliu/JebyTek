@@ -76,7 +76,7 @@ public class UploadController {
         fileDto.setPath(FILE_DOMAIN + path);
         responseDto.setContent(fileDto);
 
-        if (fileDto.getShardIndex() == fileDto.getShardTotal() - 1) {
+        if (fileDto.getShardIndex().equals(fileDto.getShardTotal() - 1)) {
             this.merge(fileDto);
         }
         return responseDto;
@@ -134,6 +134,9 @@ public class UploadController {
         LOG.info("Start Checking Shards: {}", key);
         ResponseDto responseDto = new ResponseDto();
         FileDto fileDto = fileService.findByKey(key);
+        if (fileDto != null) {
+            fileDto.setPath(FILE_DOMAIN + fileDto.getPath());
+        }
         responseDto.setContent(fileDto);
         return responseDto;
     }

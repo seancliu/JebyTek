@@ -100,6 +100,11 @@
                             param.shardIndex = 0;
                             console.log("No related shards found. Upload from shard 0.");
                             _this.upload(param);
+                        } else if (obj.shardIndex === obj.shardTotal - 1) {
+                            // file already uploaded
+                            Toast.success("File uploaded!");
+                            _this.afterUpload(resp);
+                            $("#" + _this.inputId + "-input").val("");
                         } else {
                             param.shardIndex = obj.shardIndex + 1;
                             console.log("Start uploading from shard " + param.shardIndex);
@@ -120,19 +125,20 @@
             let fileShard = _this.getFileShard(shardIndex, shardSize);
 
             let fileReader = new FileReader();
+            Progress.show(parseInt(shardIndex * 100 / shardTotal));
             fileReader.onload = function (e) {
                 let base64 = e.target.result;
                 param.shard = base64;
 
-                Loading.show();
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/file/admin/upload', param).then((response) => {
-                    Loading.hide();
                     let resp = response.data;
+                    Progress.show(parseInt((shardIndex + 1) * 100 / shardTotal));
                     if (shardIndex < shardTotal - 1) {
                         // continue to upload next shard
                         param.shardIndex = param.shardIndex + 1;
                         _this.upload(param);
                     } else {
+                        Progress.hide();
                         _this.afterUpload(resp);
                         $("#" + _this.inputId + "-input").val("");
                     }
