@@ -89,12 +89,12 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Thumb</label>
                   <div class="col-sm-10">
-                    <file v-bind:input-id="'thumb-upload'"
+                    <big-file v-bind:input-id="'thumb-upload'"
                           v-bind:text="'Upload Thumbnail'"
                           v-bind:suffixs="['jpg', 'jpeg', 'png']"
                           v-bind:use="FILE_USE.COURSE.key"
                           v-bind:after-upload="afterUpload">
-                    </file>
+                    </big-file>
                     <div v-show="course.thumb" class="row">
                       <div class="col-md-6">
                         <img v-bind:src="course.thumb" class="img-responsive">
@@ -227,9 +227,9 @@
 
 <script>
     import Pagination from "../../components/pagination";
-    import File from "../../components/file";
+    import BigFile from "../../components/big-file";
     export default {
-        components: {Pagination,File},
+        components: {Pagination,BigFile},
         name: 'business-course',
         data: function() {
             return {
