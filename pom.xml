@@ -42,6 +42,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.853</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -98,6 +105,8 @@
 				<artifactId>fastjson</artifactId>
 				<version>1.2.32</version>
 			</dependency>
+
+
 		</dependencies>
 
 	</dependencyManagement>

@@ -1,5 +1,14 @@
 package com.jebytek.file.controller.admin;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.jebytek.file.config.FileApplication;
 import com.jebytek.server.dto.FileDto;
 import com.jebytek.server.dto.ResponseDto;
@@ -30,6 +39,15 @@ public class UploadController {
 
     @Value("${file.path}")
     private String FILE_PATH;
+
+    @Value("${amzs3.bucketName}")
+    private String bucketName;
+
+    @Value("{amzs3.accessKeyId")
+    private String accessKeyId;
+
+    @Value("${amzs3.secretAccessKey")
+    private String secretAccessKey;
 
     @Resource
     private FileService fileService;
@@ -79,6 +97,7 @@ public class UploadController {
         if (fileDto.getShardIndex().equals(fileDto.getShardTotal() - 1)) {
             this.merge(fileDto);
         }
+
         return responseDto;
     }
 
@@ -119,6 +138,13 @@ public class UploadController {
         System.gc();
         Thread.sleep(100);
 
+        // transfer merged file to S3
+        try {
+            transferToS3(path);
+        } catch (IOException e) {
+            LOG.error("S3 Transfer Error ", e);
+        }
+
         LOG.info("Start Deleting Shards...");
         for (int i = 0; i < shardTotal; i++) {
             String filePath = FILE_PATH + path + "." + i;
@@ -127,6 +153,39 @@ public class UploadController {
             LOG.info("Delete{} -- {}", filePath, result ? "SUCCESS" : "FAIL");
         }
         LOG.info("Shards Deleted.");
+    }
+
+    private void transferToS3(String path) throws Exception {
+        Regions clientRegion = Regions.US_EAST_2;
+        String fileObjKeyName = path;
+        String fileName = FILE_PATH + path;
+
+        try {
+            BasicAWSCredentials awsCredentials = new BasicAWSCredentials("", "");
+
+            //This code expects that you have AWS credentials set up per:
+            // https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
+            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withRegion(clientRegion)
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
+
+
+            // Upload a file as a new object with ContentType and title specified.
+            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("plain/text");
+            metadata.addUserMetadata("title", "someTitle");
+            request.setMetadata(metadata);
+            s3Client.putObject(request);
+        } catch (AmazonServiceException e) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process
+            // it, so it returned an error response.
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/check/{key}")

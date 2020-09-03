@@ -42,5 +42,10 @@
             <groupId>com.jebytek</groupId>
             <artifactId>server</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+        </dependency>
     </dependencies>
 </project>
