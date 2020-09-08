@@ -43,11 +43,11 @@ public class UploadController {
     @Value("${amzs3.bucketName}")
     private String bucketName;
 
-    @Value("{amzs3.accessKeyId")
-    private String accessKeyId;
+    @Value("${cloud.aws.credentials.accessKey}")
+    private String accessKey;
 
-    @Value("${amzs3.secretAccessKey")
-    private String secretAccessKey;
+    @Value("${cloud.aws.credentials.secretKey}")
+    private String secretKey;
 
     @Resource
     private FileService fileService;
@@ -161,7 +161,7 @@ public class UploadController {
         String fileName = FILE_PATH + path;
 
         try {
-            BasicAWSCredentials awsCredentials = new BasicAWSCredentials("", "");
+            BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
 
             //This code expects that you have AWS credentials set up per:
             // https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
@@ -171,7 +171,7 @@ public class UploadController {
 
 
             // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest(bucketName, fileObjKeyName, new File(fileName));
+            PutObjectRequest request = new PutObjectRequest("jebytek", fileObjKeyName, new File(fileName));
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("plain/text");
             metadata.addUserMetadata("title", "someTitle");
