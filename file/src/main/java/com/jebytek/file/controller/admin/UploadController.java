@@ -138,9 +138,11 @@ public class UploadController {
         System.gc();
         Thread.sleep(100);
 
-        // transfer merged file to S3
+        FileUseEnum useEnum = FileUseEnum.getByCode(fileDto.getUse());
+        String use = useEnum.name().toLowerCase();
+        // transfer merged file to AWS S3
         try {
-            transferToS3(path);
+            transferToS3(use, new StringBuffer(fileDto.getKey()).append(".").append(fileDto.getSuffix()).toString(), path);
         } catch (IOException e) {
             LOG.error("S3 Transfer Error ", e);
         }
@@ -150,15 +152,19 @@ public class UploadController {
             String filePath = FILE_PATH + path + "." + i;
             File file = new File(filePath);
             boolean result = file.delete();
-            LOG.info("Delete{} -- {}", filePath, result ? "SUCCESS" : "FAIL");
+            LOG.info("Delete {} -- {}", filePath, result ? "SUCCESS" : "FAIL");
         }
         LOG.info("Shards Deleted.");
+
+        File file = new File(FILE_PATH + path);
+        boolean mergedFileDeleteResult = file.delete();
+        LOG.info("Delete {} -- {}", FILE_PATH + path, mergedFileDeleteResult ? "SUCCESS" : "FAIL");
     }
 
-    private void transferToS3(String path) throws Exception {
+    private void transferToS3(String folderName, String fileName, String path) throws Exception {
         Regions clientRegion = Regions.US_EAST_2;
-        String fileObjKeyName = path;
-        String fileName = FILE_PATH + path;
+        String fileObjKeyName = folderName + "/" + fileName;
+        String filePath = FILE_PATH + path;
 
         try {
             BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -171,7 +177,7 @@ public class UploadController {
 
 
             // Upload a file as a new object with ContentType and title specified.
-            PutObjectRequest request = new PutObjectRequest("jebytek", fileObjKeyName, new File(fileName));
+            PutObjectRequest request = new PutObjectRequest("jebytek", fileObjKeyName, new File(filePath));
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType("plain/text");
             metadata.addUserMetadata("title", "someTitle");
